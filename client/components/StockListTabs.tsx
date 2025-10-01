@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Dimensions, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
+import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
 import { ActivelyTrading, TopGainers, TopLosers } from '../constants/DummyData';
 
 interface StockItemProps {
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
   },
   listContainer: {
     paddingHorizontal: 20,
-    paddingVertical: 10,
+    paddingVertical: 20,
   },
   stockItem: {
     flexDirection: 'row',

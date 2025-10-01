@@ -10,7 +10,7 @@ export default function TabLayout() {
       }}
       tabBar={(props) => <BottomNavigation {...props} />}>
       <Tabs.Screen
-        name="index"
+        name="explore"
         options={{
           title: 'Explore',
         }}
@@ -28,9 +28,9 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="profile"
+        name="funds"
         options={{
-          title: 'Profile',
+          title: 'Funds',
         }}
       />
     </Tabs>

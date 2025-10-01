@@ -78,7 +78,7 @@ const BottomNavigation: React.FC<BottomTabBarProps> = ({ state, navigation }) =>
   const indicatorX = useSharedValue(0);
 
   const navItems = [
-    { route: 'index', icon: 'bar-chart' as const, label: 'Explore' },
+    { route: 'explore', icon: 'bar-chart' as const, label: 'Explore' },
     { route: 'stocks', icon: 'trending-up-outline' as const, label: 'Trending' },
     { route: 'news', icon: 'newspaper' as const, label: 'News' },
     { route: 'funds', icon: 'cash' as const, label: 'Funds' },
