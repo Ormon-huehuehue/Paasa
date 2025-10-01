@@ -1,14 +1,14 @@
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import StockCard from './StockCard';
 import { watchlist } from '../constants/DummyData';
+import StockCard from './StockCard';
 
 const WatchlistSection: React.FC = () => {
   return (
     <View style={styles.section}>
       <View style={styles.sectionHeader}>
-        <Text style={styles.sectionTitle}>Watchlist Saya</Text>
+        <Text style={styles.sectionTitle}>Watchlist</Text>
         <TouchableOpacity>
           <Ionicons name="add-circle-outline" size={24} color="#FFF" />
         </TouchableOpacity>

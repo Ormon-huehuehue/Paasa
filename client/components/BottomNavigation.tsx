@@ -1,4 +1,4 @@
-import { FontAwesome, Ionicons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import React, { useEffect } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
@@ -81,7 +81,7 @@ const BottomNavigation: React.FC<BottomTabBarProps> = ({ state, navigation }) =>
     { route: 'index', icon: 'bar-chart' as const, label: 'Explore' },
     { route: 'stocks', icon: 'trending-up-outline' as const, label: 'Trending' },
     { route: 'news', icon: 'newspaper' as const, label: 'News' },
-    { route: 'profile', icon: 'person-outline' as const, label: 'Profil' },
+    { route: 'funds', icon: 'cash' as const, label: 'Funds' },
   ];
   const tabWidth = 100 / navItems.length;
 
@@ -101,7 +101,6 @@ const BottomNavigation: React.FC<BottomTabBarProps> = ({ state, navigation }) =>
   return (
     <View style={styles.bottomNav}>
       <Animated.View style={[styles.activeIndicator, indicatorStyle]} />
-      <FontAwesome name="hacker-news" size={24} color="black" />
       {navItems.map((item, index) => (
         <NavItem
           key={item.route}

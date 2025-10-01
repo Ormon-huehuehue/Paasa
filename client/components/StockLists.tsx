@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import Animated, { FadeIn, FadeOut, Layout, FadeInUp } from 'react-native-reanimated';
-import { TopGainers, TopLosers, ActivelyTrading } from '@/constants/DummyData';
 import Colors from '@/constants/Colors';
+import { ActivelyTrading, TopGainers, TopLosers } from '@/constants/DummyData';
+import React, { useState } from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import Animated, { FadeIn, FadeInUp, FadeOut, Layout } from 'react-native-reanimated';
 import StockListTab from './StockListTab';
 
 export default function StockLists() {

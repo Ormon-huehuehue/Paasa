@@ -3,11 +3,11 @@ import React from 'react';
 import { ScrollView, StatusBar, StyleSheet } from 'react-native';
 
 // Components
-import ActionButtons from '../../components/ActionButtons';
 
 
+import ExploreHeader from '@/components/ExploreHeader';
+import MarketSnapshot from '../../components/MarketSnapshot';
 import NewsSection from '../../components/NewsSection';
-import TrendingSection from '../../components/TrendingSection';
 import WatchlistSection from '../../components/WatchlistSection';
 
 const TradingDashboard: React.FC = () => {
@@ -20,9 +20,9 @@ const TradingDashboard: React.FC = () => {
       <StatusBar barStyle="light-content" />
       
       <ScrollView showsVerticalScrollIndicator={false}>
-        
-        <ActionButtons />
-        <TrendingSection />
+        <ExploreHeader/> 
+        {/* <ActionButtons /> */}
+        <MarketSnapshot />
         <WatchlistSection />
         <NewsSection />
       </ScrollView>      

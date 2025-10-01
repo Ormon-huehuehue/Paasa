@@ -1,11 +1,11 @@
-import React from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
-import Animated, { FadeInDown } from 'react-native-reanimated';
 import Colors from '@/constants/Colors';
+import React from 'react';
+import { Image, StyleSheet, Text } from 'react-native';
+import Animated from 'react-native-reanimated';
 
 export default function ExploreHeader() {
   return (
-    <Animated.View entering={FadeInDown.duration(600)} style={styles.headerContainer}>
+    <Animated.View style={styles.headerContainer}>
       <Text style={styles.title}>Explore</Text>
       <Image
         source={{ uri: 'https://via.placeholder.com/40' }} // Placeholder profile icon
@@ -22,18 +22,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
     paddingVertical: 15,
-    backgroundColor: Colors.light.background,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
+    borderBottomColor : "#374151",
+    borderBottomWidth : 1,
     elevation: 5,
     marginBottom: 10,
   },
   title: {
     fontSize: 32,
     fontWeight: 'bold',
-    color: Colors.light.text,
+    color: Colors.dark.text,
   },
   profileIcon: {
     width: 45,
