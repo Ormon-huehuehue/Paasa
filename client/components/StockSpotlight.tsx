@@ -1,99 +1,122 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
-import { StockSpotlightData } from '@/constants/DummyData';
-import Colors from '@/constants/Colors';
-import Animated, { FadeInUp } from 'react-native-reanimated';
+import { Image, StyleSheet, Text, View } from 'react-native';
+import { StockSpotlightData } from '../constants/DummyData';
 
-export default function StockSpotlight() {
+
+const StockSpotlight: React.FC = () => {
   return (
-    <Animated.View entering={FadeInUp.delay(400).duration(600)} style={styles.container}>
+    <View style={styles.section}>
       <Text style={styles.sectionTitle}>Stock Spotlight</Text>
+
       <View style={styles.spotlightCard}>
-        <View style={styles.header}>
+        <View style={styles.logoContainer}>
           <Image source={{ uri: StockSpotlightData.logo }} style={styles.companyLogo} />
-          <View>
-            <Text style={styles.companyName}>{StockSpotlightData.name}</Text>
-            <Text style={styles.stockTicker}>{StockSpotlightData.ticker}</Text>
+        </View>
+
+        <Text style={styles.companyName}>{StockSpotlightData.name}</Text>
+        <Text style={styles.companyTicker}>{StockSpotlightData.ticker}</Text>
+        <Text style={styles.companyDescription}>{StockSpotlightData.description}</Text>
+
+        <View style={styles.priceContainer}>
+          <Text style={styles.priceText}>${StockSpotlightData.price.toFixed(2)}</Text>
+          <View style={[
+            styles.changeBadge,
+            StockSpotlightData.change > 0 ? styles.positiveChange : styles.negativeChange
+          ]}>
+            <Text style={styles.changeText}>
+              {StockSpotlightData.change > 0 ? '+' : ''}{StockSpotlightData.change.toFixed(2)}%
+            </Text>
           </View>
         </View>
-        <Text style={styles.description}>{StockSpotlightData.description}</Text>
-        <View style={styles.priceInfo}>
-          <Text style={styles.currentPrice}>{StockSpotlightData.price.toFixed(2)}</Text>
-          <Text style={[
-            styles.priceChange,
-            { color: StockSpotlightData.change >= 0 ? Colors.light.green : Colors.light.red }
-          ]}>
-            {StockSpotlightData.change >= 0 ? '+' : ''}{StockSpotlightData.change.toFixed(2)}%
-          </Text>
-        </View>
       </View>
-    </Animated.View>
+    </View>
   );
-}
+};
+
+export default StockSpotlight;
 
 const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 20,
-    paddingVertical: 15,
-    backgroundColor: Colors.light.background,
+  section: {
+    marginBottom: 24,
   },
   sectionTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: Colors.light.text,
-    marginBottom: 15,
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#FFF',
+    paddingHorizontal: 20,
+    marginBottom: 12,
   },
   spotlightCard: {
-    backgroundColor: Colors.light.cardBackground,
-    borderRadius: 15,
+    backgroundColor: '#1F2937',
     padding: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.15,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  header: {
-    flexDirection: 'row',
+    borderRadius: 20,
+    marginHorizontal: 20,
     alignItems: 'center',
-    marginBottom: 15,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.25,
+    shadowRadius: 10,
+    elevation: 8,
+  },
+  logoContainer: {
+    width: 90,
+    height: 90,
+    borderRadius: 45,
+    backgroundColor: '#111827',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 12,
+    borderWidth: 2,
+    borderColor: '#10B981', // subtle accent glow
   },
   companyLogo: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    marginRight: 15,
-    resizeMode: 'contain',
+    width: 70,
+    height: 70,
+    borderRadius: 35,
   },
   companyName: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: Colors.light.text,
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#FFF',
+    marginBottom: 2,
+    textAlign: 'center',
   },
-  stockTicker: {
-    fontSize: 15,
-    color: Colors.light.secondaryText,
-    marginTop: 2,
+  companyTicker: {
+    fontSize: 14,
+    color: '#9CA3AF',
+    marginBottom: 10,
   },
-  description: {
-    fontSize: 15,
-    color: Colors.light.text,
-    marginBottom: 15,
-    lineHeight: 22,
+  companyDescription: {
+    fontSize: 13,
+    color: '#D1D5DB',
+    textAlign: 'center',
+    marginBottom: 16,
+    lineHeight: 18,
   },
-  priceInfo: {
+  priceContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'flex-end',
+    gap: 8,
   },
-  currentPrice: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    color: Colors.light.text,
-    marginRight: 10,
+  priceText: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#FFF',
   },
-  priceChange: {
-    fontSize: 17,
+  changeBadge: {
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 12,
+  },
+  changeText: {
+    fontSize: 14,
     fontWeight: '600',
+    color: '#FFF',
+  },
+  positiveChange: {
+    backgroundColor: '#064E3B',
+  },
+  negativeChange: {
+    backgroundColor: '#7F1D1D',
   },
 });

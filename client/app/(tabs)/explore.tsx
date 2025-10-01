@@ -9,6 +9,7 @@ import ExploreHeader from '@/components/ExploreHeader';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import MarketSnapshot from '../../components/MarketSnapshot';
 import NewsSection from '../../components/NewsSection';
+import StockSpotlight from '../../components/StockSpotlight';
 import WatchlistSection from '../../components/WatchlistSection';
 
 const TradingDashboard: React.FC = () => {
@@ -26,6 +27,7 @@ const TradingDashboard: React.FC = () => {
           {/* <ActionButtons /> */}
           <MarketSnapshot />
           <WatchlistSection />
+          <StockSpotlight />
           <NewsSection />
         </ScrollView>      
     </LinearGradient>
