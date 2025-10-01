@@ -16,10 +16,9 @@ interface NavItemProps {
   label: string;
   isActive: boolean;
   onPress: () => void;
-  isCenter?: boolean;
 }
 
-const NavItem: React.FC<NavItemProps> = ({ icon, label, isActive, onPress, isCenter = false }) => {
+const NavItem: React.FC<NavItemProps> = ({ icon, label, isActive, onPress }) => {
   const scale = useSharedValue(isActive ? 1 : 0.95);
   const iconScale = useSharedValue(isActive ? 1 : 0.9);
   const translateY = useSharedValue(0);
@@ -35,7 +34,7 @@ const NavItem: React.FC<NavItemProps> = ({ icon, label, isActive, onPress, isCen
       easing: Easing.out(Easing.ease),
     });
 
-    translateY.value = withTiming(isActive && !isCenter ? 0 : 0, {
+    translateY.value = withTiming(isActive ? 0 : 0, {
       duration: 200,
       easing: Easing.out(Easing.ease),
     });
@@ -60,21 +59,6 @@ const NavItem: React.FC<NavItemProps> = ({ icon, label, isActive, onPress, isCen
     onPress();
   };
 
-  if (isCenter) {
-    return (
-      <AnimatedTouchable
-        style={[styles.navItem, animatedContainerStyle]}
-        activeOpacity={0.7}
-        onPress={handlePress}
-      >
-        <Animated.View style={[styles.navCenterIcon, animatedIconStyle]}>
-          <Ionicons name={icon} size={28} color="#1F2937" />
-        </Animated.View>
-        <Text style={styles.navText}>{label}</Text>
-      </AnimatedTouchable>
-    );
-  }
-
   return (
     <AnimatedTouchable
       style={[styles.navItem, animatedContainerStyle]}
@@ -95,9 +79,8 @@ const BottomNavigation: React.FC<BottomTabBarProps> = ({ state, navigation }) =>
 
   const navItems = [
     { route: 'index', icon: 'bar-chart' as const, label: 'Explore' },
-    { route: 'stocks', icon: 'trending-up-outline' as const, label: 'Stocks' },
-    { route: 'search', icon: 'search' as const, label: 'search', isCenter: true },
-    { route: 'market', icon: 'newspaper' as const, label: 'news' },
+    { route: 'stocks', icon: 'trending-up-outline' as const, label: 'Trending' },
+    { route: 'news', icon: 'newspaper' as const, label: 'News' },
     { route: 'profile', icon: 'person-outline' as const, label: 'Profil' },
   ];
   const tabWidth = 100 / navItems.length;
@@ -125,17 +108,8 @@ const BottomNavigation: React.FC<BottomTabBarProps> = ({ state, navigation }) =>
           icon={item.icon}
           label={item.label}
           isActive={activeIndex === index}
-          isCenter={item.isCenter}
           onPress={() => {
-            if (item.route === 'topup') {
-              console.log('Top Up');
-            } else if (item.route === 'market') {
-              console.log('Pasar');
-            } else if (item.route === 'profile') {
-              console.log('Profil');
-            } else {
-              navigation.navigate(item.route);
-            }
+            navigation.navigate(item.route);
           }}
         />
         
@@ -167,22 +141,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     gap: 4,
-  },
-  navCenterIcon: {
-    backgroundColor: '#FFF',
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: -24,
-    borderWidth: 4,
-    borderColor: '#1F2937',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 8,
-    elevation: 8,
   },
   navText: {
     fontSize: 11,

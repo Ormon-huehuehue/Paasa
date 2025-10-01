@@ -4,24 +4,27 @@ import { ScrollView, StatusBar, StyleSheet } from 'react-native';
 
 // Components
 import ActionButtons from '../../components/ActionButtons';
-import BalanceSection from '../../components/BalanceSection';
 
+
+import NewsSection from '../../components/NewsSection';
 import TrendingSection from '../../components/TrendingSection';
 import WatchlistSection from '../../components/WatchlistSection';
 
 const TradingDashboard: React.FC = () => {
   return (
     <LinearGradient
-      colors={['#1F2937', '#111827']}
+      colors={['#0B0F1A', '#111827', '#1E293B', '#0B0F1A']}
       style={styles.container}
+      start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
     >
       <StatusBar barStyle="light-content" />
       
       <ScrollView showsVerticalScrollIndicator={false}>
-        <BalanceSection />
+        
         <ActionButtons />
         <TrendingSection />
         <WatchlistSection />
+        <NewsSection />
       </ScrollView>      
     </LinearGradient>
   );
