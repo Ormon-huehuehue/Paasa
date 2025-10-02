@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, StatusBar, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StatusBar, StyleSheet, Text, View, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import BalanceSection from '../../components/BalanceSection';
 
@@ -20,6 +20,15 @@ const ProfileScreen: React.FC = () => {
           <Text style={styles.profileText}>Email: armnvrma10@gmail.com</Text>
           <Text style={styles.profileText}>Paasa Member Since: xyz 2025</Text>
         </View>
+         {/* Dawg image and hire me section */}
+        <View style={styles.hireMeSection}>
+          <Image
+            source={require('../../assets/images/dawg.png')}
+            style={styles.dawgImage}
+            resizeMode="contain"
+          />
+          <Text style={styles.hireMeText}>Hire me</Text>
+        </View>
       </ScrollView>
     </LinearGradient>
   );
@@ -30,6 +39,24 @@ export default ProfileScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  hireMeSection: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 20,
+    paddingHorizontal: 20,
+    marginBottom: 24,
+  },
+  dawgImage: {
+    width: 200,
+    height: 200,
+    marginBottom: 20,
+  },
+  hireMeText: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#FFF',
+    textAlign: 'center',
   },
   section: {
     paddingHorizontal: 20,

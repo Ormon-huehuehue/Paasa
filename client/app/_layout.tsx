@@ -5,9 +5,10 @@ import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import AnimatedSplashScreen from '../components/AnimatedSplashScreen';
 
 
 export {
@@ -30,6 +31,8 @@ export default function RootLayout() {
     ...FontAwesome.font,
   });
 
+  const [showSplash, setShowSplash] = useState(true);
+
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
     if (error) throw error;
@@ -41,11 +44,22 @@ export default function RootLayout() {
     }
   }, [loaded]);
 
+  const handleSplashFinish = () => {
+    setShowSplash(false);
+  };
+
   if (!loaded) {
     return null;
   }
 
-  return <RootLayoutNav />;
+  return (
+    <>
+      <RootLayoutNav />
+      {showSplash && (
+        <AnimatedSplashScreen onAnimationFinish={handleSplashFinish} />
+      )}
+    </>
+  );
 }
 
 function RootLayoutNav() {
@@ -54,11 +68,11 @@ function RootLayoutNav() {
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <View style={{flex : 1, backgroundColor : '#0B0F1A', paddingTop : insets.top, paddingBottom : insets.bottom}}>
+      <View style={{ flex: 1, backgroundColor: '#0B0F1A', paddingTop: insets.top }}>
         <Stack>
           <Stack.Screen name="index" options={{ headerShown: false }} />
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="modal" options={{ presentation: 'modal', headerShown : false }} />
+          <Stack.Screen name="modal" options={{ presentation: 'modal', headerShown: false }} />
         </Stack>
       </View>
     </ThemeProvider>

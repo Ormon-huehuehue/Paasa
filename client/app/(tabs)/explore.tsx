@@ -2,14 +2,12 @@ import Header from '@/components/Header';
 import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
 import { ScrollView, StatusBar, StyleSheet } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import MarketSnapshot from '../../components/MarketSnapshot';
 import NewsSection from '../../components/NewsSection';
 import StockSpotlight from '../../components/StockSpotlight';
 import WatchlistSection from '../../components/WatchlistSection';
 
 const TradingDashboard: React.FC = () => {
-  const insets = useSafeAreaInsets();
 
   return (
     <LinearGradient

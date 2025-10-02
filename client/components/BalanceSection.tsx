@@ -12,7 +12,7 @@ const BalanceSection: React.FC = () => {
         <Text style={styles.balanceAmount}>Rs 200</Text>
         <View style={styles.balanceChange}>
           <Ionicons name="arrow-down" size={14} color="#d62323ff" />
-          <Text style={styles.balanceChangeText}>Rs 400 (200%)</Text>
+          <Text style={styles.balanceChangeText}>Rs 400 (66.67%)</Text>
         </View>
       </View>
     </View>
