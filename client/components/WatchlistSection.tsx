@@ -1,8 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { watchlist } from '../constants/DummyData';
-import StockCard from './StockCard';
 
 const WatchlistSection: React.FC = () => {
   return (
@@ -14,9 +12,16 @@ const WatchlistSection: React.FC = () => {
         </TouchableOpacity>
       </View>
       <View style={styles.watchlistContainer}>
-        {watchlist.map((stock, index) => (
-          <StockCard key={index} stock={stock} />
-        ))}
+        <View style={styles.emptyState}>
+          <Ionicons name="star-outline" size={48} color="#6B7280" />
+          <Text style={styles.emptyStateTitle}>Your Watchlist is Empty</Text>
+          <Text style={styles.emptyStateText}>
+            Add stocks to your watchlist to track them here
+          </Text>
+          <TouchableOpacity style={styles.addButton}>
+            <Text style={styles.addButtonText}>Add Stocks</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -42,5 +47,35 @@ const styles = StyleSheet.create({
   },
   watchlistContainer: {
     paddingHorizontal: 20,
+  },
+  emptyState: {
+    alignItems: 'center',
+    paddingVertical: 40,
+    paddingHorizontal: 20,
+  },
+  emptyStateTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#FFF',
+    marginTop: 16,
+    marginBottom: 8,
+  },
+  emptyStateText: {
+    fontSize: 14,
+    color: '#9CA3AF',
+    textAlign: 'center',
+    marginBottom: 20,
+    lineHeight: 20,
+  },
+  addButton: {
+    backgroundColor: '#10B981',
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+    borderRadius: 8,
+  },
+  addButtonText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#FFF',
   },
 });

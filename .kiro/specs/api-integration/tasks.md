@@ -112,55 +112,96 @@
   - Add fallback display for API failures
   - _Requirements: 4.4, 4.5_
 
-- [ ] 7. Integrate news display on explore page
+- [x] 7. Integrate news display on explore page
   - Update explore page to show top 5 news items
   - Ensure news section integrates smoothly with existing components
   - Handle loading and error states without breaking page layout
   - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5_
 
-- [ ] 7.1 Update explore page NewsSection integration
+- [x] 7.1 Update explore page NewsSection integration
   - Modify NewsSection to accept limit prop for top 5 display
   - Ensure proper integration with existing explore page layout
   - _Requirements: 3.1, 3.2_
 
-- [ ] 7.2 Handle explore page news error states
+- [x] 7.2 Handle explore page news error states
   - Implement graceful error handling that doesn't break explore page
   - Add subtle loading states for news section
   - _Requirements: 3.4, 3.5_
 
-- [ ] 8. Add comprehensive error handling and user feedback
+- [x] 8. Add comprehensive error handling and user feedback
   - Implement user-friendly error messages across all components
   - Add retry functionality for failed API calls
   - Ensure graceful degradation when APIs are unavailable
   - _Requirements: 5.1, 5.2, 5.3, 5.4, 5.5_
 
-- [ ] 8.1 Create error handling utilities and components
+- [x] 8.1 Create error handling utilities and components
   - Create reusable error message components
   - Implement retry logic with exponential backoff
   - _Requirements: 5.1, 5.2_
 
-- [ ] 8.2 Add comprehensive error states to all components
+- [x] 8.2 Add comprehensive error states to all components
   - Update all components with consistent error handling
   - Implement fallback data display when available
   - _Requirements: 5.3, 5.4, 5.5_
 
-- [ ]* 9. Add unit tests for API integration
+- [x] 9. Integrate market indexes API in MarketSnapshot component
+  - Replace dummy trending stocks data with market indexes API
+  - Create useMarketIndexes hook for data management
+  - Update MarketSnapshot component to display market indexes with proper formatting
+  - Add loading and error states for market indexes
+  - _Requirements: 6.1, 6.2, 5.1, 5.2_
+
+- [x] 9.1 Create useMarketIndexes hook
+  - Implement hook for fetching market indexes data
+  - Add loading, error, and refetch functionality
+  - _Requirements: 5.1, 5.2_
+
+- [x] 9.2 Update MarketSnapshot component with API integration
+  - Replace trendingStocks dummy data with useMarketIndexes hook
+  - Update component to display market indexes (S&P 500, NASDAQ, etc.)
+  - Add loading indicators and error handling
+  - _Requirements: 6.1, 6.2_
+
+- [x] 10. Clean up remaining dummy data usage
+  - Remove unused dummy data imports and constants
+  - Ensure all components use API data instead of static data
+  - Update any remaining hardcoded data references
+  - _Requirements: 1.1, 2.1, 4.1_
+
+- [x] 10.1 Update WatchlistSection component
+  - Replace watchlist dummy data with user-specific data or remove if not needed
+  - Add proper data management for watchlist functionality
+  - _Requirements: 1.1_
+
+- [x] 10.2 Clean up unused dummy data constants
+  - Remove unused imports from DummyData constants
+  - Clean up any remaining static data references
+  - _Requirements: All requirements_
+
+- [x] 10.3 Add expand/collapse functionality to StockSpotlight description
+  - Truncate description to 50 characters by default
+  - Add tap-to-expand functionality for full description
+  - Implement smooth reveal animation when expanding/collapsing
+  - Add visual indicator (e.g., "Show more"/"Show less" text)
+  - _Requirements: 4.3, 6.1, 6.2_
+
+- [ ]* 11. Add unit tests for API integration
   - Write tests for API service methods with mocked responses
   - Test custom hooks with various data states
   - Test error handling scenarios and data transformations
   - _Requirements: All requirements_
 
-- [ ]* 9.1 Write API service tests
+- [ ]* 11.1 Write API service tests
   - Test all API service methods with success and error scenarios
   - Mock HTTP responses and test data transformation
   - _Requirements: 1.2, 2.2, 4.2_
 
-- [ ]* 9.2 Write custom hook tests
+- [ ]* 11.2 Write custom hook tests
   - Test useStockData, useNewsData, and useSpotlightStock hooks
   - Test loading states, error handling, and data updates
   - _Requirements: 1.3, 1.4, 1.5, 2.3, 2.4, 2.5, 4.3, 4.4, 4.5_
 
-- [ ]* 9.3 Write component integration tests
+- [ ]* 11.3 Write component integration tests
   - Test updated components with API integration
   - Test loading states, error states, and user interactions
   - _Requirements: All requirements_

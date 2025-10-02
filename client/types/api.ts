@@ -48,7 +48,7 @@ export interface NewsItem {
 export interface MarketIndex {
   symbol: string;
   name: string;
-  value: number;
+  price: number;
   change: number;
   changePercent: number;
 }

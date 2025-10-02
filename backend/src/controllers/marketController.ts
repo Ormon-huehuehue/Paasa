@@ -17,17 +17,17 @@ export class MarketController {
   async getMarketIndexes(req: Request, res: Response): Promise<void> {
     try {
       const indexes = await yahooFinanceService.getMarketIndexes();
-      
+
       const response: ApiResponse<MarketIndex[]> = {
         success: true,
         data: indexes,
         timestamp: new Date().toISOString()
       };
-      
+
       res.json(response);
     } catch (error) {
       logger.error('Failed to fetch market indexes', { url: req.url, method: req.method }, error as Error);
-      
+
       const errorResponse: ErrorResponse = {
         success: false,
         error: {
@@ -37,7 +37,7 @@ export class MarketController {
         },
         timestamp: new Date().toISOString()
       };
-      
+
       res.status(500).json(errorResponse);
     }
   }
@@ -50,7 +50,7 @@ export class MarketController {
       const { limit, offset } = parsePaginationParams(req.query);
       const allStocks = await yahooFinanceService.getTopGainers();
       const paginatedResult = paginateArray(allStocks, limit, offset);
-      
+
       const response: PaginatedStockResponse = {
         success: true,
         data: {
@@ -60,11 +60,11 @@ export class MarketController {
         },
         timestamp: new Date().toISOString()
       };
-      
+
       res.json(response);
     } catch (error) {
       logger.error('Failed to fetch top gainers', { url: req.url, method: req.method }, error as Error);
-      
+
       const errorResponse: ErrorResponse = {
         success: false,
         error: {
@@ -74,7 +74,7 @@ export class MarketController {
         },
         timestamp: new Date().toISOString()
       };
-      
+
       res.status(500).json(errorResponse);
     }
   }
@@ -87,7 +87,7 @@ export class MarketController {
       const { limit, offset } = parsePaginationParams(req.query);
       const allStocks = await yahooFinanceService.getTopLosers();
       const paginatedResult = paginateArray(allStocks, limit, offset);
-      
+
       const response: PaginatedStockResponse = {
         success: true,
         data: {
@@ -97,11 +97,11 @@ export class MarketController {
         },
         timestamp: new Date().toISOString()
       };
-      
+
       res.json(response);
     } catch (error) {
       logger.error('Failed to fetch top losers', { url: req.url, method: req.method }, error as Error);
-      
+
       const errorResponse: ErrorResponse = {
         success: false,
         error: {
@@ -111,7 +111,7 @@ export class MarketController {
         },
         timestamp: new Date().toISOString()
       };
-      
+
       res.status(500).json(errorResponse);
     }
   }
@@ -124,7 +124,7 @@ export class MarketController {
       const { limit, offset } = parsePaginationParams(req.query);
       const allStocks = await yahooFinanceService.getMostActive();
       const paginatedResult = paginateArray(allStocks, limit, offset);
-      
+
       const response: PaginatedStockResponse = {
         success: true,
         data: {
@@ -134,11 +134,11 @@ export class MarketController {
         },
         timestamp: new Date().toISOString()
       };
-      
+
       res.json(response);
     } catch (error) {
       logger.error('Failed to fetch most active stocks', { url: req.url, method: req.method }, error as Error);
-      
+
       const errorResponse: ErrorResponse = {
         success: false,
         error: {
@@ -148,7 +148,7 @@ export class MarketController {
         },
         timestamp: new Date().toISOString()
       };
-      
+
       res.status(500).json(errorResponse);
     }
   }
@@ -160,21 +160,21 @@ export class MarketController {
     try {
       const symbol = req.query.symbol as string || 'AAPL'; // Default to Apple
       const spotlightStock = await yahooFinanceService.getSpotlightStock(symbol);
-      
+
       const response: ApiResponse<SpotlightStock> = {
         success: true,
         data: spotlightStock,
         timestamp: new Date().toISOString()
       };
-      
+
       res.json(response);
     } catch (error) {
-      logger.error('Failed to fetch spotlight stock', { 
-        url: req.url, 
-        method: req.method, 
-        symbol: req.query.symbol 
+      logger.error('Failed to fetch spotlight stock', {
+        url: req.url,
+        method: req.method,
+        symbol: req.query.symbol
       }, error as Error);
-      
+
       const errorResponse: ErrorResponse = {
         success: false,
         error: {
@@ -184,7 +184,7 @@ export class MarketController {
         },
         timestamp: new Date().toISOString()
       };
-      
+
       res.status(500).json(errorResponse);
     }
   }

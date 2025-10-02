@@ -1,5 +1,6 @@
-import React from 'react';
-import { ActivityIndicator, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useState } from 'react';
+import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { useSpotlightStock } from '../hooks/useSpotlightStock';
 
 // Utility function to format market cap
@@ -21,6 +22,29 @@ const formatMarketCap = (marketCap: number): string => {
 const StockSpotlight: React.FC = () => {
   // Use the spotlight hook to get API data
   const { data: spotlightStock, loading, error, refetch } = useSpotlightStock();
+  
+  // State for expand/collapse functionality
+  const [isExpanded, setIsExpanded] = useState(false);
+  const animatedHeight = useSharedValue(0);
+
+  // Function to truncate description
+  const truncateDescription = (text: string, maxLength: number = 50): string => {
+    if (text.length <= maxLength) return text;
+    return text.substring(0, maxLength) + '...';
+  };
+
+  // Function to toggle expand/collapse
+  const toggleExpanded = () => {
+    setIsExpanded(!isExpanded);
+    animatedHeight.value = withTiming(isExpanded ? 0 : 1, { duration: 300 });
+  };
+
+  // Animated style for smooth height transition
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      opacity: withTiming(isExpanded ? 1 : 0.7, { duration: 300 }),
+    };
+  });
 
   const renderContent = () => {
     // Loading state
@@ -57,7 +81,30 @@ const StockSpotlight: React.FC = () => {
 
           <Text style={styles.companyName}>{spotlightStock.name}</Text>
           <Text style={styles.companyTicker}>{spotlightStock.symbol}</Text>
-          <Text style={styles.companyDescription}>{spotlightStock.description}</Text>
+          
+          {/* Description with expand/collapse functionality */}
+          <View style={styles.descriptionContainer}>
+            <Animated.View style={animatedStyle}>
+              <Text style={styles.companyDescription}>
+                {isExpanded 
+                  ? spotlightStock.description 
+                  : truncateDescription(spotlightStock.description, 50)
+                }
+              </Text>
+            </Animated.View>
+            
+            {spotlightStock.description.length > 50 && (
+              <TouchableOpacity 
+                style={styles.expandButton} 
+                onPress={toggleExpanded}
+                activeOpacity={0.7}
+              >
+                <Text style={styles.expandButtonText}>
+                  {isExpanded ? 'Show less' : 'Show more'}
+                </Text>
+              </TouchableOpacity>
+            )}
+          </View>
 
           {/* Optional fields display */}
           {(spotlightStock.sector || spotlightStock.industry) && (
@@ -180,12 +227,29 @@ const styles = StyleSheet.create({
     color: '#9CA3AF',
     marginBottom: 10,
   },
+  descriptionContainer: {
+    marginBottom: 16,
+    alignItems: 'center',
+  },
   companyDescription: {
     fontSize: 13,
     color: '#D1D5DB',
     textAlign: 'center',
-    marginBottom: 16,
     lineHeight: 18,
+    marginBottom: 8,
+  },
+  expandButton: {
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 6,
+    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+    borderWidth: 1,
+    borderColor: 'rgba(16, 185, 129, 0.3)',
+  },
+  expandButtonText: {
+    fontSize: 12,
+    color: '#10B981',
+    fontWeight: '600',
   },
   priceContainer: {
     flexDirection: 'row',

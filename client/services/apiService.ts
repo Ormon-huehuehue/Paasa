@@ -107,9 +107,12 @@ class ApiService implements ApiServiceInterface {
    */
   async getMarketIndexes(): Promise<MarketIndexResponse> {
     try {
-      const response = await apiClient.get('/market/indexes');
+      console.log('[ApiService] Fetching market indexes...');
+      const response = await apiClient.get('/indexes');
+      console.log('[ApiService] Market indexes response:', response.data);
       return response.data;
     } catch (error) {
+      console.error('[ApiService] Error fetching market indexes:', error);
       throw error;
     }
   }

@@ -27,7 +27,7 @@ const Slider = () => {
   };
 
   const handleOnViewableItemsChanged = useRef(({ viewableItems }: { viewableItems: ViewToken[] }) => {
-    if (viewableItems[0].index !== null) {
+    if (viewableItems.length > 0 && viewableItems[0].index !== null) {
       setIndex(viewableItems[0].index);
     }
   }).current;
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     color: '#FFF',
     fontSize: 18,
     fontWeight: '600',
-    flex : 1,
-    justifyContent : 'center'
+    flex: 1,
+    justifyContent: 'center'
   },
 });
