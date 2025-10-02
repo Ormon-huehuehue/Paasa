@@ -1,33 +1,121 @@
 import React from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
-import { StockSpotlightData } from '../constants/DummyData';
+import { ActivityIndicator, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useSpotlightStock } from '../hooks/useSpotlightStock';
+
+// Utility function to format market cap
+const formatMarketCap = (marketCap: number): string => {
+  if (marketCap >= 1e12) {
+    return `$${(marketCap / 1e12).toFixed(2)}T`;
+  } else if (marketCap >= 1e9) {
+    return `$${(marketCap / 1e9).toFixed(2)}B`;
+  } else if (marketCap >= 1e6) {
+    return `$${(marketCap / 1e6).toFixed(2)}M`;
+  } else if (marketCap >= 1e3) {
+    return `$${(marketCap / 1e3).toFixed(2)}K`;
+  } else {
+    return `$${marketCap.toFixed(2)}`;
+  }
+};
 
 
 const StockSpotlight: React.FC = () => {
+  // Use the spotlight hook to get API data
+  const { data: spotlightStock, loading, error, refetch } = useSpotlightStock();
+
+  const renderContent = () => {
+    // Loading state
+    if (loading.isLoading) {
+      return (
+        <View style={styles.centerContainer}>
+          <ActivityIndicator size="large" color="#10B981" />
+          <Text style={styles.loadingText}>Loading spotlight stock...</Text>
+        </View>
+      );
+    }
+
+    // Error state
+    if (error.hasError) {
+      return (
+        <View style={styles.centerContainer}>
+          <Text style={styles.errorText}>{error.errorMessage}</Text>
+          {error.isRetryable && (
+            <TouchableOpacity style={styles.retryButton} onPress={refetch}>
+              <Text style={styles.retryButtonText}>Try Again</Text>
+            </TouchableOpacity>
+          )}
+        </View>
+      );
+    }
+
+    // Data state
+    if (spotlightStock) {
+      return (
+        <>
+          <View style={styles.logoContainer}>
+            <Text style={styles.logoText}>{spotlightStock.symbol}</Text>
+          </View>
+
+          <Text style={styles.companyName}>{spotlightStock.name}</Text>
+          <Text style={styles.companyTicker}>{spotlightStock.symbol}</Text>
+          <Text style={styles.companyDescription}>{spotlightStock.description}</Text>
+
+          {/* Optional fields display */}
+          {(spotlightStock.sector || spotlightStock.industry) && (
+            <View style={styles.metadataContainer}>
+              {spotlightStock.sector && (
+                <Text style={styles.metadataText}>Sector: {spotlightStock.sector}</Text>
+              )}
+              {spotlightStock.industry && (
+                <Text style={styles.metadataText}>Industry: {spotlightStock.industry}</Text>
+              )}
+            </View>
+          )}
+
+          <View style={styles.priceContainer}>
+            <Text style={styles.priceText}>${spotlightStock.price.toFixed(2)}</Text>
+            <View style={[
+              styles.changeBadge,
+              spotlightStock.changePercent > 0 ? styles.positiveChange : styles.negativeChange
+            ]}>
+              <Text style={styles.changeText}>
+                {spotlightStock.changePercent > 0 ? '+' : ''}{spotlightStock.changePercent.toFixed(2)}%
+              </Text>
+            </View>
+          </View>
+
+          {/* Additional metrics */}
+          <View style={styles.metricsContainer}>
+            <View style={styles.metricItem}>
+              <Text style={styles.metricLabel}>Market Cap</Text>
+              <Text style={styles.metricValue}>{formatMarketCap(spotlightStock.marketCap)}</Text>
+            </View>
+            {spotlightStock.peRatio && (
+              <View style={styles.metricItem}>
+                <Text style={styles.metricLabel}>P/E Ratio</Text>
+                <Text style={styles.metricValue}>{spotlightStock.peRatio.toFixed(2)}</Text>
+              </View>
+            )}
+          </View>
+        </>
+      );
+    }
+
+    // Fallback state
+    return (
+      <View style={styles.centerContainer}>
+        <Text style={styles.fallbackText}>No spotlight data available</Text>
+        <TouchableOpacity style={styles.retryButton} onPress={refetch}>
+          <Text style={styles.retryButtonText}>Refresh</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
   return (
     <View style={styles.section}>
       <Text style={styles.sectionTitle}>Stock Spotlight</Text>
-
       <View style={styles.spotlightCard}>
-        <View style={styles.logoContainer}>
-          <Image source={{ uri: StockSpotlightData.logo }} style={styles.companyLogo} />
-        </View>
-
-        <Text style={styles.companyName}>{StockSpotlightData.name}</Text>
-        <Text style={styles.companyTicker}>{StockSpotlightData.ticker}</Text>
-        <Text style={styles.companyDescription}>{StockSpotlightData.description}</Text>
-
-        <View style={styles.priceContainer}>
-          <Text style={styles.priceText}>${StockSpotlightData.price.toFixed(2)}</Text>
-          <View style={[
-            styles.changeBadge,
-            StockSpotlightData.change > 0 ? styles.positiveChange : styles.negativeChange
-          ]}>
-            <Text style={styles.changeText}>
-              {StockSpotlightData.change > 0 ? '+' : ''}{StockSpotlightData.change.toFixed(2)}%
-            </Text>
-          </View>
-        </View>
+        {renderContent()}
       </View>
     </View>
   );
@@ -74,6 +162,12 @@ const styles = StyleSheet.create({
     height: 70,
     borderRadius: 35,
   },
+  logoText: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#10B981',
+    textAlign: 'center',
+  },
   companyName: {
     fontSize: 18,
     fontWeight: '700',
@@ -118,5 +212,70 @@ const styles = StyleSheet.create({
   },
   negativeChange: {
     backgroundColor: '#7F1D1D',
+  },
+  metadataContainer: {
+    marginBottom: 12,
+    alignItems: 'center',
+  },
+  metadataText: {
+    fontSize: 12,
+    color: '#9CA3AF',
+    marginBottom: 2,
+  },
+  metricsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginTop: 16,
+    paddingTop: 16,
+    borderTopWidth: 1,
+    borderTopColor: '#374151',
+    width: '100%',
+  },
+  metricItem: {
+    alignItems: 'center',
+  },
+  metricLabel: {
+    fontSize: 12,
+    color: '#9CA3AF',
+    marginBottom: 4,
+  },
+  metricValue: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#FFF',
+  },
+  centerContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 40,
+  },
+  loadingText: {
+    fontSize: 14,
+    color: '#9CA3AF',
+    marginTop: 12,
+  },
+  errorText: {
+    fontSize: 14,
+    color: '#EF4444',
+    textAlign: 'center',
+    marginBottom: 16,
+    lineHeight: 20,
+  },
+  fallbackText: {
+    fontSize: 14,
+    color: '#9CA3AF',
+    textAlign: 'center',
+    marginBottom: 16,
+  },
+  retryButton: {
+    backgroundColor: '#10B981',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 8,
+  },
+  retryButtonText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#FFF',
   },
 });

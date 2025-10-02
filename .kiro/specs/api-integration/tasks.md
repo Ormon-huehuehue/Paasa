@@ -91,23 +91,23 @@
   - Add loading states and error handling for news
   - _Requirements: 2.3, 2.4, 2.5, 3.3_
 
-- [-] 6. Update StockSpotlight component with API integration
+- [x] 6. Update StockSpotlight component with API integration
   - Replace dummy spotlight data with API calls
   - Implement random stock selection and detailed data display
   - Handle optional fields and API failures gracefully
   - _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5, 6.1, 6.2, 6.3, 6.4_
 
-- [-] 6.1 Integrate spotlight API in StockSpotlight component
+- [x] 6.1 Integrate spotlight API in StockSpotlight component
   - Replace dummy data with useSpotlightStock hook
   - Implement random stock selection from predefined array
   - _Requirements: 4.1, 4.2_
 
-- [ ] 6.2 Handle spotlight data display and formatting
+- [x] 6.2 Handle spotlight data display and formatting
   - Update component to display API data with proper formatting
   - Handle optional fields (peRatio, sector, industry) gracefully
   - _Requirements: 4.3, 6.1, 6.2, 6.3, 6.4_
 
-- [ ] 6.3 Add spotlight loading and error states
+- [x] 6.3 Add spotlight loading and error states
   - Implement loading indicator for spotlight component
   - Add fallback display for API failures
   - _Requirements: 4.4, 4.5_

@@ -80,7 +80,7 @@ class ApiService implements ApiServiceInterface {
       // If no symbol provided, randomly select from predefined list
       const symbol = params?.symbol || this.getRandomSpotlightSymbol();
       
-      const response = await apiClient.get(`/spotlight/${symbol}`);
+      const response = await apiClient.get(`/spotlight?${symbol}`);
       return this.transformSpotlightResponse(response.data);
     } catch (error) {
       throw error;
