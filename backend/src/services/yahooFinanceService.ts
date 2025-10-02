@@ -173,16 +173,17 @@ export class YahooFinanceService implements IYahooFinanceService {
   async getMarketIndexes(): Promise<MarketIndex[]> {
     return this.executeWithRetry(async () => {
       const symbols = ['^GSPC', '^IXIC', '^DJI', '^RUT']; // S&P 500, NASDAQ, Dow Jones, Russell 2000
-      const quotes = await yahooFinance.quote(symbols) as Record<string, any>;
-
+      const quotes = await yahooFinance.quote(symbols);
       const indexes: MarketIndex[] = [];
 
-      for (const symbol of symbols) {
-        const quote = quotes?.[symbol];
-        if (quote) {
+      quotes.forEach(quote =>{
+        const symbol = quote.symbol;
+        console.log("Symbol : ", symbol)
+     
+        if (quote && symbol) {
           indexes.push(this.transformToMarketIndex(quote, symbol));
         }
-      }
+      })
 
       return indexes;
     }, 'getMarketIndexes');
@@ -738,7 +739,7 @@ export class YahooFinanceService implements IYahooFinanceService {
               : Math.floor(new Date(item.providerPublishTime).getTime() / 1000),
             summary: item.summary
           }))
-          .slice(0, 10); // Limit to 10 items
+          .slice(0, 5); // Limit to 10 items
 
         return newsItems;
       } catch (error) {

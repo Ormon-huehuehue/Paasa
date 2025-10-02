@@ -55,7 +55,7 @@ const startServer = async (): Promise<void> => {
       logger.info(`   GET /losers?limit=5&offset=0 - Top losing stocks (paginated)`);
       logger.info(`   GET /active?limit=5&offset=0 - Most active stocks (paginated)`);
       logger.info(`   GET /spotlight?symbol=MSFT - Spotlight stock`);
-      logger.info(`   GET /news?q=tech&limit=10&offset=0 - Latest financial news (paginated)`);
+      logger.info(`   GET /news?q=tech&limit=5&offset=0 - Latest financial news (paginated)`);
       logger.info(`🔧 Environment: ${config.nodeEnv}`);
     });
 

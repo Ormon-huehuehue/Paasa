@@ -61,10 +61,10 @@ All list endpoints support pagination through query parameters:
 {
   "pagination": {
     "total": 25,        // Total items available
-    "limit": 10,        // Items per page
+    "limit": 5,        // Items per page
     "offset": 0,        // Current offset
     "hasMore": true,    // Whether more items exist
-    "nextOffset": 10    // Offset for next page (if hasMore is true)
+    "nextOffset": 5    // Offset for next page (if hasMore is true)
   }
 }
 ```
@@ -292,10 +292,10 @@ GET /news?q={query}&limit={limit}&offset={offset}
   ],
   "pagination": {
     "total": 25,
-    "limit": 10,
+    "limit": 5,
     "offset": 0,
     "hasMore": true,
-    "nextOffset": 10
+    "nextOffset": 5
   },
   "timestamp": "2025-10-02T15:13:45.096Z"
 }

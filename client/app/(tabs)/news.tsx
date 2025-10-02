@@ -8,12 +8,12 @@ const NewsScreen: React.FC = () => {
   return (
     <LinearGradient
       colors={['#1F2937', '#111827']}
-      style={{flex : 1}}
+      style={{ flex: 1 }}
     >
-      <Header heading="Latest news"/>
+      <Header heading="Latest news" />
       <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
         <View style={styles.section}>
-          <NewsSection/>
+          <NewsSection enablePagination={true} limit={5} />
         </View>
       </ScrollView>
     </LinearGradient>
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     fontSize: 32,
     fontWeight: 'bold',
-    paddingHorizontal : 20
+    paddingHorizontal: 20
   },
   newsItem: {
     fontSize: 16,

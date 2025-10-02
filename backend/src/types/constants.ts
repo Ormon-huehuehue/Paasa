@@ -45,7 +45,7 @@ export const DEFAULTS = {
   LOG_LEVEL: 'info',
   SPOTLIGHT_SYMBOL: 'AAPL',
   NEWS_QUERY: 'US stocks',
-  NEWS_LIMIT: 10,
+  NEWS_LIMIT: 5,
 } as const;
 
 // Market Index Symbols

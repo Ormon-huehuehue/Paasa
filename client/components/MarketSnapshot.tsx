@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { trendingStocks } from '../constants/DummyData';
 import StockCard from './StockCard';
 
 const MarketSnapshot: React.FC = () => {
+
+  
+
   return (
     <View style={styles.section}>
       <Text style={styles.sectionTitle}>Market Snapshot</Text>

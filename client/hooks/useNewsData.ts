@@ -1,11 +1,11 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { apiService } from '../services/apiService';
-import { 
-  NewsItem, 
-  UseNewsDataReturn, 
-  LoadingState, 
-  ErrorState, 
-  NewsParams 
+import {
+  NewsItem,
+  UseNewsDataReturn,
+  LoadingState,
+  ErrorState,
+  NewsParams
 } from '../types/api';
 
 /**
@@ -15,8 +15,8 @@ import {
  * @returns UseNewsDataReturn object with data, loading states, error states, and control functions
  */
 export const useNewsData = (
-  query?: string, 
-  limit: number = 10
+  query?: string,
+  limit: number = 5
 ): UseNewsDataReturn => {
   // State management
   const [data, setData] = useState<NewsItem[] | null>(null);
@@ -32,6 +32,8 @@ export const useNewsData = (
     isRetryable: false
   });
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
+  const [hasMore, setHasMore] = useState<boolean>(true);
+  const [currentOffset, setCurrentOffset] = useState<number>(0);
 
   // Refs for preventing duplicate requests
   const isRequestInProgress = useRef<boolean>(false);
@@ -55,7 +57,7 @@ export const useNewsData = (
    */
   const handleError = useCallback((err: any, isRetryable: boolean = true) => {
     console.error('Error fetching news:', err);
-    
+
     let errorType: ErrorState['errorType'] = 'unknown';
     let errorMessage = 'An unexpected error occurred while fetching news';
 
@@ -87,19 +89,20 @@ export const useNewsData = (
    */
   const fetchNewsData = useCallback(async (
     params: NewsParams,
-    isRefresh: boolean = false
+    isRefresh: boolean = false,
+    isLoadMore: boolean = false
   ) => {
     if (isRequestInProgress.current) return;
-    
+
     isRequestInProgress.current = true;
     clearError();
 
     // Set appropriate loading state
     setLoading(prev => ({
       ...prev,
-      isLoading: !isRefresh,
+      isLoading: !isRefresh && !isLoadMore,
       isRefreshing: isRefresh,
-      isLoadingMore: false
+      isLoadingMore: isLoadMore
     }));
 
     try {
@@ -107,16 +110,34 @@ export const useNewsData = (
 
       if (response.success && response.data) {
         const newsItems = response.data;
-        
+
         // Validate and filter news items
-        const validNewsItems = newsItems.filter(item => 
-          item.title && 
-          item.summary && 
+        const validNewsItems = newsItems.filter(item =>
+          item.title &&
           item.url &&
           item.source
         );
 
-        setData(validNewsItems);
+        if (isLoadMore) {
+          // Append new items to existing data
+          setData(prevData => prevData ? [...prevData, ...validNewsItems] : validNewsItems);
+        } else {
+          // Replace data (initial load or refresh)
+          setData(validNewsItems);
+          setCurrentOffset(params.offset || 0);
+        }
+
+        // Update pagination state
+        if (response.pagination) {
+          setHasMore(response.pagination.hasMore);
+          if (isLoadMore) {
+            setCurrentOffset(response.pagination.nextOffset || currentOffset + validNewsItems.length);
+          }
+        } else {
+          // If no pagination info, assume no more data if we got less than requested
+          setHasMore(validNewsItems.length >= (params.limit || 10));
+        }
+
         setLastUpdated(new Date());
       } else {
         throw new Error('Invalid response format');
@@ -131,12 +152,14 @@ export const useNewsData = (
       });
       isRequestInProgress.current = false;
     }
-  }, [clearError, handleError]);
+  }, [clearError, handleError, currentOffset]);
 
   /**
    * Initial data fetch
    */
   const fetchInitialData = useCallback(() => {
+    setCurrentOffset(0);
+    setHasMore(true);
     fetchNewsData({
       query: currentQuery.current,
       limit: currentLimit.current,
@@ -148,12 +171,27 @@ export const useNewsData = (
    * Refetch data (for pull-to-refresh or manual refresh)
    */
   const refetch = useCallback(() => {
+    setCurrentOffset(0);
+    setHasMore(true);
     fetchNewsData({
       query: currentQuery.current,
       limit: currentLimit.current,
       offset: 0
     }, true);
   }, [fetchNewsData]);
+
+  /**
+   * Load more data (for pagination)
+   */
+  const loadMore = useCallback(() => {
+    if (!hasMore || loading.isLoadingMore || loading.isLoading) return;
+
+    fetchNewsData({
+      query: currentQuery.current,
+      limit: currentLimit.current,
+      offset: currentOffset + currentLimit.current
+    }, false, true);
+  }, [fetchNewsData, hasMore, loading.isLoadingMore, loading.isLoading, currentOffset]);
 
   // Update refs when props change
   useEffect(() => {
@@ -179,6 +217,8 @@ export const useNewsData = (
     loading,
     error,
     refetch,
+    loadMore,
+    hasMore,
     lastUpdated
   };
 };

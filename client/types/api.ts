@@ -139,6 +139,8 @@ export interface UseNewsDataReturn {
   loading: LoadingState;
   error: ErrorState;
   refetch: () => void;
+  loadMore: () => void;
+  hasMore: boolean;
   lastUpdated: Date | null;
 }
 

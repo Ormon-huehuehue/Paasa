@@ -24,7 +24,7 @@ const TradingDashboard: React.FC = () => {
           <MarketSnapshot />
           <WatchlistSection />
           <StockSpotlight />
-          <NewsSection />
+          <NewsSection limit={5} showTitle={true} title="Latest News" />
         </ScrollView>      
     </LinearGradient>
   );

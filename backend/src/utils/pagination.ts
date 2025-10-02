@@ -24,7 +24,7 @@ export interface PaginationResult<T> {
 export function parsePaginationParams(query: any): { limit: number; offset: number } {
   const limit = Math.min(Math.max(parseInt(query.limit) || 10, 1), 50); // Default 10, max 50
   const offset = Math.max(parseInt(query.offset) || 0, 0); // Default 0, min 0
-  
+
   return { limit, offset };
 }
 
@@ -32,8 +32,8 @@ export function parsePaginationParams(query: any): { limit: number; offset: numb
  * Apply pagination to an array of items
  */
 export function paginateArray<T>(
-  items: T[], 
-  limit: number, 
+  items: T[],
+  limit: number,
   offset: number
 ): PaginationResult<T> {
   const total = items.length;
@@ -48,7 +48,7 @@ export function paginateArray<T>(
       limit,
       offset,
       hasMore,
-      nextOffset
+      ...(hasMore && { nextOffset: offset + limit })
     }
   };
 }

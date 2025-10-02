@@ -75,29 +75,29 @@
   - Update "View More" button to use loadMore from hook
   - _Requirements: 5.2, 1.5_
 
-- [ ] 5. Update NewsSection component with API integration
+- [x] 5. Update NewsSection component with API integration
   - Replace dummy news data with API calls
   - Implement different display modes for full list vs top 5 items
   - Add tap-to-open functionality for news articles
   - _Requirements: 2.1, 2.2, 2.3, 2.4, 2.5, 3.1, 3.2, 3.3_
 
-- [ ] 5.1 Integrate news API in NewsSection component
+- [x] 5.1 Integrate news API in NewsSection component
   - Replace dummy data with useNewsData hook
   - Handle different display modes (full vs limited)
   - _Requirements: 2.1, 2.2, 3.1, 3.2_
 
-- [ ] 5.2 Add news interaction and error handling
+- [x] 5.2 Add news interaction and error handling
   - Implement tap-to-open functionality using Linking API
   - Add loading states and error handling for news
   - _Requirements: 2.3, 2.4, 2.5, 3.3_
 
-- [ ] 6. Update StockSpotlight component with API integration
+- [-] 6. Update StockSpotlight component with API integration
   - Replace dummy spotlight data with API calls
   - Implement random stock selection and detailed data display
   - Handle optional fields and API failures gracefully
   - _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5, 6.1, 6.2, 6.3, 6.4_
 
-- [ ] 6.1 Integrate spotlight API in StockSpotlight component
+- [-] 6.1 Integrate spotlight API in StockSpotlight component
   - Replace dummy data with useSpotlightStock hook
   - Implement random stock selection from predefined array
   - _Requirements: 4.1, 4.2_
