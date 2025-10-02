@@ -8,6 +8,36 @@ interface StockCardProps {
   horizontal?: boolean;
 }
 
+const truncateStockName = (stockName: string, maxLength: number): string => {
+    // Check if the input name is already shorter than or equal to the maximum allowed length.
+    if (stockName.length <= maxLength) {
+        return stockName;
+    }
+
+    // Since we need to append "..." (3 characters), we slice the original string
+    // to be maxLength - 3 characters long.
+    const sliceLength = maxLength - 2;
+    
+    // Ensure the slice length is not negative (in case maxLength is < 3).
+    if (sliceLength <= 0) {
+        // If maxLength is too small, just return a truncated string of length maxLength
+        // (This behavior can be adjusted, but this is a safe default).
+        return stockName.slice(0, maxLength); 
+    }
+
+    // Truncate the string and append the ellipsis
+    return stockName.slice(0, sliceLength) + '..';
+};
+
+function truncateToDecimals(num : number, decimals : number) {
+    const factor = Math.pow(10, decimals);
+    
+    // 1. Shift the decimal point (e.g., 1.239 * 100 = 123.9)
+    // 2. Truncate to remove the remaining fraction (e.g., Math.trunc(123.9) = 123)
+    // 3. Shift the decimal back (e.g., 123 / 100 = 1.23)
+    return Math.trunc(num * factor) / factor;
+}
+
 const StockCard: React.FC<StockCardProps> = ({ stock, horizontal = false }) => (
   <TouchableOpacity 
     style={horizontal ? styles.trendingCard : styles.watchlistItem}
@@ -17,13 +47,13 @@ const StockCard: React.FC<StockCardProps> = ({ stock, horizontal = false }) => (
       <>
         <View style={styles.trendingHeader}>
           <View style={[styles.stockIcon, { backgroundColor: stock.color }]}>
-            <Text style={styles.stockIconText}>{stock.symbol.charAt(0)}</Text>
+            <Text style={styles.stockIconText}>{stock.name.charAt(0)}</Text>
           </View>
-          <Text style={styles.trendingSymbol}>{stock.symbol}</Text>
+          <Text style={styles.trendingSymbol}>{truncateStockName(stock.name, 10)}</Text>
         </View>
         <Text style={styles.trendingPrice}>{stock.price.toLocaleString()}</Text>
         <Text style={styles.trendingChange}>
-          +{stock.change} (+{stock.changePercent}%)
+          +{truncateToDecimals(stock.change, 2)} (+{truncateToDecimals(stock.changePercent, 2)}%)
         </Text>
       </>
     ) : (
@@ -58,7 +88,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#374151',
     padding: 16,
     borderRadius: 16,
-    width: 120,
+    width: 170,
   },
   trendingHeader: {
     flexDirection: 'row',
