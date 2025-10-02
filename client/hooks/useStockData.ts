@@ -148,26 +148,20 @@ export const useStockData = (
       // Call appropriate API method based on endpoint
       switch (endpoint) {
         case 'gainers':
-          console.log('[useStockData] Calling getTopGainers');
           response = await apiService.getTopGainers(params);
           break;
         case 'losers':
-          console.log('[useStockData] Calling getTopLosers');
           response = await apiService.getTopLosers(params);
           break;
         case 'active':
-          console.log('[useStockData] Calling getMostActive');
           response = await apiService.getMostActive(params);
           break;
         default:
           throw new Error(`Invalid endpoint: ${endpoint}`);
       }
 
-      console.log(`[useStockData] API response for ${endpoint}:`, response);
-
       if (response.success && response.data) {
         const newStocks = response.data.stocks;
-        console.log(`[useStockData] Received ${newStocks?.length || 0} stocks for ${endpoint}`);
         
         if (!newStocks || !Array.isArray(newStocks)) {
           console.error(`[useStockData] Invalid stocks data:`, newStocks);
@@ -184,7 +178,6 @@ export const useStockData = (
 
         // Update pagination info
         const pagination = response.data.pagination;
-        console.log(`[useStockData] Pagination info:`, pagination);
         setHasMore(pagination?.hasMore || false);
         
         if (pagination?.nextOffset !== undefined) {

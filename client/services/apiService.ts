@@ -26,9 +26,7 @@ class ApiService implements ApiServiceInterface {
    */
   async getTopGainers(params?: StockListParams): Promise<StockListResponse> {
     try {
-      console.log('[ApiService] Fetching top gainers with params:', params);
       const response = await apiClient.get('/gainers', { params });
-      console.log('[ApiService] Top gainers response:', response.data);
       return this.transformStockListResponse(response.data, 'Top Gainers');
     } catch (error) {
       console.error('[ApiService] Error fetching top gainers:', error);
@@ -43,9 +41,7 @@ class ApiService implements ApiServiceInterface {
    */
   async getTopLosers(params?: StockListParams): Promise<StockListResponse> {
     try {
-      console.log('[ApiService] Fetching top losers with params:', params);
       const response = await apiClient.get('/losers', { params });
-      console.log('[ApiService] Top losers response:', response.data);
       return this.transformStockListResponse(response.data, 'Top Losers');
     } catch (error) {
       console.error('[ApiService] Error fetching top losers:', error);
@@ -60,9 +56,7 @@ class ApiService implements ApiServiceInterface {
    */
   async getMostActive(params?: StockListParams): Promise<StockListResponse> {
     try {
-      console.log('[ApiService] Fetching most active with params:', params);
       const response = await apiClient.get('/active', { params });
-      console.log('[ApiService] Most active response:', response.data);
       return this.transformStockListResponse(response.data, 'Most Active');
     } catch (error) {
       console.error('[ApiService] Error fetching most active:', error);
@@ -79,7 +73,6 @@ class ApiService implements ApiServiceInterface {
     try {
       // If no symbol provided, randomly select from predefined list
       const symbol = params?.symbol || this.getRandomSpotlightSymbol();
-      
       const response = await apiClient.get(`/spotlight?${symbol}`);
       return this.transformSpotlightResponse(response.data);
     } catch (error) {
@@ -152,9 +145,6 @@ class ApiService implements ApiServiceInterface {
         };
       }
     }
-    
-    console.log('[ApiService] Transformed stocks:', stocks);
-    console.log('[ApiService] Pagination:', pagination);
     
     return {
       success: backendResponse.success || true,
