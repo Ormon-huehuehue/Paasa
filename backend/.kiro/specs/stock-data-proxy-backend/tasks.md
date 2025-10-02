@@ -41,28 +41,28 @@
     - Test error handling scenarios and data transformation
     - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5_
 
-- [ ] 4. Refactor Express application to use proper architecture
-  - [ ] 4.1 Create API controllers for separation of concerns
+- [x] 4. Refactor Express application to use proper architecture
+  - [x] 4.1 Create API controllers for separation of concerns
     - Extract controller logic from main index.ts file
     - Implement market data controller with proper request/response handling
     - Implement news controller with proper error handling
     - Add consistent API response formatting using ApiResponse types
     - _Requirements: 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7, 2.8, 4.1, 4.2_
   
-  - [ ] 4.2 Create Express route modules
+  - [x] 4.2 Create Express route modules
     - Define separate route files for market data and news endpoints
     - Wire controllers to appropriate route handlers
     - Implement proper route organization and modularity
     - _Requirements: 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 4.1, 4.2_
   
-  - [ ] 4.3 Implement middleware layer
+  - [x] 4.3 Implement middleware layer
     - Create global error handler middleware with proper HTTP status codes
     - Add request logging middleware for debugging
     - Implement input validation middleware
     - Add CORS and security middleware as needed
     - _Requirements: 5.1, 5.2, 5.4, 5.5_
   
-  - [ ] 4.4 Refactor main application entry point
+  - [x] 4.4 Refactor main application entry point
     - Update index.ts to use modular architecture with controllers and routes
     - Configure Express app with proper middleware stack
     - Add graceful startup and shutdown handling
