@@ -179,10 +179,10 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: '#FFF',
     paddingHorizontal: 20,
-    marginBottom: 12,
+    marginBottom: 24,
   },
   spotlightCard: {
-    backgroundColor: '#1F2937',
+       backgroundColor: '#374151b1', 
     padding: 20,
     borderRadius: 20,
     marginHorizontal: 20,
