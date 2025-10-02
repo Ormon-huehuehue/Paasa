@@ -1,66 +1,119 @@
 import React, { useState } from 'react';
-import { Dimensions, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Dimensions, RefreshControl, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
-import { ActivelyTrading, TopGainers, TopLosers } from '../constants/DummyData';
+import { useStockData } from '../hooks/useStockData';
 
 interface StockItemProps {
-  ticker: string;
-  exchange: string;
+  symbol: string;
+  name: string;
   price: number;
   change: number;
+  changePercent: number;
 }
 
-const StockItem: React.FC<StockItemProps> = ({ ticker, exchange, price, change }) => {
-  const changeColor = change > 0 ? '#10B981' : '#EF4444';
+const StockItem: React.FC<StockItemProps> = ({ symbol, name, price, change, changePercent }) => {
+  const changeColor = changePercent > 0 ? '#10B981' : '#EF4444';
   return (
     <View style={styles.stockItem}>
       <View>
-        <Text style={styles.stockTicker}>{ticker}</Text>
-        <Text style={styles.stockExchange}>{exchange}</Text>
+        <Text style={styles.stockTicker}>{symbol}</Text>
+        <Text style={styles.stockExchange}>{name}</Text>
       </View>
       <View style={styles.stockPriceChange}>
-        <Text style={styles.stockPrice}>{price.toFixed(2)}</Text>
-        <Text style={[styles.stockChange, { color: changeColor }]}>{change > 0 ? '+' : ''}{change.toFixed(2)}%</Text>
+        <Text style={styles.stockPrice}>${price.toFixed(2)}</Text>
+        <Text style={[styles.stockChange, { color: changeColor }]}>
+          {changePercent > 0 ? '+' : ''}{changePercent.toFixed(2)}%
+        </Text>
       </View>
     </View>
   );
 };
 
 interface StockListProps {
-  data: StockItemProps[];
+  endpoint: 'gainers' | 'losers' | 'active';
 }
 
-const StockList: React.FC<StockListProps> = ({ data }) => {
-  const [displayCount, setDisplayCount] = useState(5);
+const StockList: React.FC<StockListProps> = ({ endpoint }) => {
+  const { data, loading, error, refetch, loadMore, hasMore } = useStockData(endpoint);
 
-  const loadMore = () => {
-    setDisplayCount(prevCount => prevCount + 5);
-  };
+  if (loading && !data) {
+    return (
+      <View style={styles.centerContainer}>
+        <ActivityIndicator size="large" color="#10B981" />
+        <Text style={styles.loadingText}>Loading stock data...</Text>
+      </View>
+    );
+  }
+
+  if (error && !data) {
+    return (
+      <View style={styles.centerContainer}>
+        <View style={styles.errorIcon}>
+          <Text style={styles.errorIconText}>⚠️</Text>
+        </View>
+        <Text style={styles.errorText}>Unable to load stock data</Text>
+        <Text style={styles.errorSubtext}>Please check your connection and try again</Text>
+        <TouchableOpacity onPress={refetch} style={styles.retryButton}>
+          <Text style={styles.retryButtonText}>Try Again</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
 
   return (
-    <ScrollView contentContainerStyle={styles.listContainer}>
-      {data.slice(0, displayCount).map((stock, index) => (
-        <StockItem key={index} {...stock} />
+    <ScrollView 
+      contentContainerStyle={styles.listContainer}
+      refreshControl={
+        <RefreshControl
+          refreshing={loading && !data}
+          onRefresh={refetch}
+          colors={['#10B981']}
+          tintColor="#10B981"
+        />
+      }
+    >
+      {data?.map((stock, index) => (
+        <StockItem key={`${stock.symbol}-${index}`} {...stock} />
       ))}
-      {displayCount < data.length && (
-        <TouchableOpacity onPress={loadMore} style={styles.viewMoreButton}>
-          <Text style={styles.viewMoreButtonText}>View More</Text>
+      {hasMore && (
+        <TouchableOpacity 
+          onPress={loadMore} 
+          style={[styles.viewMoreButton, loading && styles.viewMoreButtonDisabled]} 
+          disabled={loading}
+        >
+          {loading ? (
+            <View style={styles.loadingButtonContent}>
+              <ActivityIndicator size="small" color="#FFF" />
+              <Text style={styles.viewMoreButtonText}>Loading...</Text>
+            </View>
+          ) : (
+            <Text style={styles.viewMoreButtonText}>View More</Text>
+          )}
         </TouchableOpacity>
+      )}
+      {error && data && (
+        <View style={styles.errorContainer}>
+          <Text style={styles.errorText}>Failed to load more data</Text>
+          <Text style={styles.errorSubtext}>Check your connection and try again</Text>
+          <TouchableOpacity onPress={refetch} style={styles.retryButton}>
+            <Text style={styles.retryButtonText}>Retry</Text>
+          </TouchableOpacity>
+        </View>
       )}
     </ScrollView>
   );
 };
 
-const ActivelyTradingRoute = () => <StockList data={ActivelyTrading} />;
-const TopLosersRoute = () => <StockList data={TopLosers} />;
-const TopGainersRoute = () => <StockList data={TopGainers} />;
+const ActivelyTradingRoute = () => <StockList endpoint="active" />;
+const TopLosersRoute = () => <StockList endpoint="losers" />;
+const TopGainersRoute = () => <StockList endpoint="gainers" />;
 
 const initialLayout = { width: Dimensions.get('window').width };
 
 const StockListTabs: React.FC = () => {
   const [index, setIndex] = useState(0);
   const [routes] = useState([
-    { key: 'activelyTrading', title: 'Actively Trading' },
+    { key: 'activelyTrading', title: 'Most Active' },
     { key: 'topLosers', title: 'Top Losers' },
     { key: 'topGainers', title: 'Top Gainers' },
   ]);
@@ -104,6 +157,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 20,
   },
+  centerContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+  },
   stockItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -145,6 +204,57 @@ const styles = StyleSheet.create({
     color: '#FFF',
     fontSize: 16,
     fontWeight: '600',
+  },
+  loadingText: {
+    color: '#9CA3AF',
+    fontSize: 16,
+    textAlign: 'center',
+    marginTop: 16,
+  },
+  errorIcon: {
+    marginBottom: 16,
+  },
+  errorIconText: {
+    fontSize: 48,
+  },
+  errorText: {
+    color: '#EF4444',
+    fontSize: 18,
+    fontWeight: '600',
+    textAlign: 'center',
+    marginBottom: 8,
+  },
+  errorSubtext: {
+    color: '#9CA3AF',
+    fontSize: 14,
+    textAlign: 'center',
+    marginBottom: 24,
+  },
+  errorContainer: {
+    alignItems: 'center',
+    marginTop: 16,
+    padding: 16,
+    backgroundColor: '#374151',
+    borderRadius: 12,
+  },
+  retryButton: {
+    backgroundColor: '#10B981',
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 8,
+  },
+  retryButtonText: {
+    color: '#FFF',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  viewMoreButtonDisabled: {
+    opacity: 0.7,
+  },
+  loadingButtonContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
   },
   tabBar: {
     backgroundColor: '#1F2937',

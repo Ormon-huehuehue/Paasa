@@ -52,7 +52,7 @@
   - [x] 4.2 Create Express route modules
     - Define separate route files for market data and news endpoints
     - Wire controllers to appropriate route handlers
-    - Implement proper route organization and modularity
+    - Implement proper route organization and modularity\
     - _Requirements: 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 4.1, 4.2_
   
   - [x] 4.3 Implement middleware layer

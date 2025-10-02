@@ -1,0 +1,186 @@
+import { useState, useEffect, useCallback, useRef } from 'react';
+import { apiService } from '../services/apiService';
+import { 
+  NewsItem, 
+  UseNewsDataReturn, 
+  LoadingState, 
+  ErrorState, 
+  NewsParams 
+} from '../types/api';
+
+/**
+ * Custom hook for managing news data with loading states and error handling
+ * @param query - Optional search query for filtering news
+ * @param limit - Number of news items to fetch (default: 10)
+ * @returns UseNewsDataReturn object with data, loading states, error states, and control functions
+ */
+export const useNewsData = (
+  query?: string, 
+  limit: number = 10
+): UseNewsDataReturn => {
+  // State management
+  const [data, setData] = useState<NewsItem[] | null>(null);
+  const [loading, setLoading] = useState<LoadingState>({
+    isLoading: false,
+    isRefreshing: false,
+    isLoadingMore: false
+  });
+  const [error, setError] = useState<ErrorState>({
+    hasError: false,
+    errorMessage: null,
+    errorType: null,
+    isRetryable: false
+  });
+  const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
+
+  // Refs for preventing duplicate requests
+  const isRequestInProgress = useRef<boolean>(false);
+  const currentQuery = useRef<string | undefined>(query);
+  const currentLimit = useRef<number>(limit);
+
+  /**
+   * Clear error state
+   */
+  const clearError = useCallback(() => {
+    setError({
+      hasError: false,
+      errorMessage: null,
+      errorType: null,
+      isRetryable: false
+    });
+  }, []);
+
+  /**
+   * Handle API errors and set appropriate error state
+   */
+  const handleError = useCallback((err: any, isRetryable: boolean = true) => {
+    console.error('Error fetching news:', err);
+    
+    let errorType: ErrorState['errorType'] = 'unknown';
+    let errorMessage = 'An unexpected error occurred while fetching news';
+
+    if (err.code === 'NETWORK_ERROR' || err.message?.includes('Network Error')) {
+      errorType = 'network';
+      errorMessage = 'Network connection failed. Please check your internet connection.';
+    } else if (err.code === 'TIMEOUT_ERROR' || err.message?.includes('timeout')) {
+      errorType = 'timeout';
+      errorMessage = 'Request timed out. Please try again.';
+    } else if (err.response?.status >= 500) {
+      errorType = 'server';
+      errorMessage = 'Server error. Please try again later.';
+    } else if (err.response?.status >= 400 && err.response?.status < 500) {
+      errorType = 'validation';
+      errorMessage = err.response?.data?.error?.message || 'Invalid request';
+      isRetryable = false;
+    }
+
+    setError({
+      hasError: true,
+      errorMessage,
+      errorType,
+      isRetryable
+    });
+  }, []);
+
+  /**
+   * Fetch news data from the API
+   */
+  const fetchNewsData = useCallback(async (
+    params: NewsParams,
+    isRefresh: boolean = false
+  ) => {
+    if (isRequestInProgress.current) return;
+    
+    isRequestInProgress.current = true;
+    clearError();
+
+    // Set appropriate loading state
+    setLoading(prev => ({
+      ...prev,
+      isLoading: !isRefresh,
+      isRefreshing: isRefresh,
+      isLoadingMore: false
+    }));
+
+    try {
+      const response = await apiService.getLatestNews(params);
+
+      if (response.success && response.data) {
+        const newsItems = response.data;
+        
+        // Validate and filter news items
+        const validNewsItems = newsItems.filter(item => 
+          item.title && 
+          item.summary && 
+          item.url &&
+          item.source
+        );
+
+        setData(validNewsItems);
+        setLastUpdated(new Date());
+      } else {
+        throw new Error('Invalid response format');
+      }
+    } catch (err) {
+      handleError(err);
+    } finally {
+      setLoading({
+        isLoading: false,
+        isRefreshing: false,
+        isLoadingMore: false
+      });
+      isRequestInProgress.current = false;
+    }
+  }, [clearError, handleError]);
+
+  /**
+   * Initial data fetch
+   */
+  const fetchInitialData = useCallback(() => {
+    fetchNewsData({
+      query: currentQuery.current,
+      limit: currentLimit.current,
+      offset: 0
+    });
+  }, [fetchNewsData]);
+
+  /**
+   * Refetch data (for pull-to-refresh or manual refresh)
+   */
+  const refetch = useCallback(() => {
+    fetchNewsData({
+      query: currentQuery.current,
+      limit: currentLimit.current,
+      offset: 0
+    }, true);
+  }, [fetchNewsData]);
+
+  // Update refs when props change
+  useEffect(() => {
+    currentQuery.current = query;
+    currentLimit.current = limit;
+  }, [query, limit]);
+
+  // Initial data fetch on mount or when query/limit changes
+  useEffect(() => {
+    fetchInitialData();
+  }, [fetchInitialData]);
+
+  // Refetch when query changes
+  useEffect(() => {
+    if (currentQuery.current !== query) {
+      currentQuery.current = query;
+      fetchInitialData();
+    }
+  }, [query, fetchInitialData]);
+
+  return {
+    data,
+    loading,
+    error,
+    refetch,
+    lastUpdated
+  };
+};
+
+export default useNewsData;
