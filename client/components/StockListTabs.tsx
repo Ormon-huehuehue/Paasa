@@ -11,7 +11,7 @@ interface StockItemProps {
   changePercent: number;
 }
 
-const StockItem: React.FC<StockItemProps> = ({ symbol, name, price, change, changePercent }) => {
+const StockItem: React.FC<StockItemProps> = ({ symbol, name, price, changePercent }) => {
   const changeColor = changePercent > 0 ? '#10B981' : '#EF4444';
   return (
     <View style={styles.stockItem}>
@@ -36,7 +36,7 @@ interface StockListProps {
 const StockList: React.FC<StockListProps> = ({ endpoint }) => {
   const { data, loading, error, refetch, loadMore, hasMore } = useStockData(endpoint);
 
-  if (loading && !data) {
+  if (loading.isLoading && !data) {
     return (
       <View style={styles.centerContainer}>
         <ActivityIndicator size="large" color="#10B981" />
@@ -45,7 +45,7 @@ const StockList: React.FC<StockListProps> = ({ endpoint }) => {
     );
   }
 
-  if (error && !data) {
+  if (error.hasError && !data) {
     return (
       <View style={styles.centerContainer}>
         <View style={styles.errorIcon}>
@@ -65,23 +65,29 @@ const StockList: React.FC<StockListProps> = ({ endpoint }) => {
       contentContainerStyle={styles.listContainer}
       refreshControl={
         <RefreshControl
-          refreshing={loading && !data}
+          refreshing={loading.isRefreshing}
           onRefresh={refetch}
           colors={['#10B981']}
           tintColor="#10B981"
         />
       }
     >
+      {error.hasError && data && error.errorMessage?.includes('demo data') && (
+        <View style={styles.demoDataBanner}>
+          <Text style={styles.demoDataText}>📊 Demo Mode</Text>
+          <Text style={styles.demoDataSubtext}>Backend server not running - showing sample data</Text>
+        </View>
+      )}
       {data?.map((stock, index) => (
         <StockItem key={`${stock.symbol}-${index}`} {...stock} />
       ))}
       {hasMore && (
         <TouchableOpacity 
           onPress={loadMore} 
-          style={[styles.viewMoreButton, loading && styles.viewMoreButtonDisabled]} 
-          disabled={loading}
+          style={[styles.viewMoreButton, loading.isLoadingMore && styles.viewMoreButtonDisabled]} 
+          disabled={loading.isLoadingMore}
         >
-          {loading ? (
+          {loading.isLoadingMore ? (
             <View style={styles.loadingButtonContent}>
               <ActivityIndicator size="small" color="#FFF" />
               <Text style={styles.viewMoreButtonText}>Loading...</Text>
@@ -91,7 +97,7 @@ const StockList: React.FC<StockListProps> = ({ endpoint }) => {
           )}
         </TouchableOpacity>
       )}
-      {error && data && (
+      {error.hasError && data && !error.errorMessage?.includes('demo data') && (
         <View style={styles.errorContainer}>
           <Text style={styles.errorText}>Failed to load more data</Text>
           <Text style={styles.errorSubtext}>Check your connection and try again</Text>

@@ -26,9 +26,12 @@ class ApiService implements ApiServiceInterface {
    */
   async getTopGainers(params?: StockListParams): Promise<StockListResponse> {
     try {
+      console.log('[ApiService] Fetching top gainers with params:', params);
       const response = await apiClient.get('/gainers', { params });
+      console.log('[ApiService] Top gainers response:', response.data);
       return this.transformStockListResponse(response.data, 'Top Gainers');
     } catch (error) {
+      console.error('[ApiService] Error fetching top gainers:', error);
       throw error;
     }
   }
@@ -40,9 +43,12 @@ class ApiService implements ApiServiceInterface {
    */
   async getTopLosers(params?: StockListParams): Promise<StockListResponse> {
     try {
+      console.log('[ApiService] Fetching top losers with params:', params);
       const response = await apiClient.get('/losers', { params });
+      console.log('[ApiService] Top losers response:', response.data);
       return this.transformStockListResponse(response.data, 'Top Losers');
     } catch (error) {
+      console.error('[ApiService] Error fetching top losers:', error);
       throw error;
     }
   }
@@ -54,9 +60,12 @@ class ApiService implements ApiServiceInterface {
    */
   async getMostActive(params?: StockListParams): Promise<StockListResponse> {
     try {
+      console.log('[ApiService] Fetching most active with params:', params);
       const response = await apiClient.get('/active', { params });
+      console.log('[ApiService] Most active response:', response.data);
       return this.transformStockListResponse(response.data, 'Most Active');
     } catch (error) {
+      console.error('[ApiService] Error fetching most active:', error);
       throw error;
     }
   }
@@ -112,19 +121,44 @@ class ApiService implements ApiServiceInterface {
    * @returns Transformed StockListResponse
    */
   private transformStockListResponse(backendResponse: any, title: string): StockListResponse {
-    const transformedStocks = backendResponse.data?.map((stock: any) => this.transformStock(stock)) || [];
+    console.log('[ApiService] Transforming response:', backendResponse);
+    
+    // Handle the actual backend response structure based on API docs
+    // Backend returns: { success: true, data: { stocks: [...], pagination: {...} }, timestamp: "..." }
+    let stocks = [];
+    let pagination = {
+      total: 0,
+      limit: 0,
+      offset: 0,
+      hasMore: false
+    };
+
+    if (backendResponse.success && backendResponse.data) {
+      if (backendResponse.data.stocks) {
+        // New API structure with nested data
+        stocks = backendResponse.data.stocks.map((stock: any) => this.transformStock(stock));
+        pagination = backendResponse.data.pagination || pagination;
+      } else if (Array.isArray(backendResponse.data)) {
+        // Fallback: if data is directly an array of stocks
+        stocks = backendResponse.data.map((stock: any) => this.transformStock(stock));
+        pagination = {
+          total: stocks.length,
+          limit: stocks.length,
+          offset: 0,
+          hasMore: false
+        };
+      }
+    }
+    
+    console.log('[ApiService] Transformed stocks:', stocks);
+    console.log('[ApiService] Pagination:', pagination);
     
     return {
       success: backendResponse.success || true,
       data: {
         title,
-        stocks: transformedStocks,
-        pagination: backendResponse.pagination || {
-          total: transformedStocks.length,
-          limit: transformedStocks.length,
-          offset: 0,
-          hasMore: false
-        }
+        stocks,
+        pagination
       },
       timestamp: backendResponse.timestamp || new Date().toISOString()
     };
