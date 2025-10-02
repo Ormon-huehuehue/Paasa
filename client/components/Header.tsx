@@ -25,7 +25,6 @@ const styles = StyleSheet.create({
     borderBottomColor : "#374151",
     borderBottomWidth : 1,
     elevation: 5,
-    marginBottom: 10,
   },
   title: {
     fontSize: 32,

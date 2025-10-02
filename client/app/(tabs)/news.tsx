@@ -7,8 +7,9 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 const NewsScreen: React.FC = () => {
   return (
     <LinearGradient
-      colors={['#1F2937', '#111827']}
-      style={{ flex: 1 }}
+      colors={['#0B0F1A', '#111827', '#1E293B', '#0B0F1A']}
+      style={styles.container}
+      start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
     >
       <Header heading="Latest news" />
       <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
@@ -25,10 +26,10 @@ export default NewsScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingVertical: 5,
   },
   section: {
     marginBottom: 24,
+    marginTop : 15
   },
   sectionTitle: {
     color: '#FFF',

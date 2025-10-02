@@ -6,8 +6,9 @@ import BalanceSection from '../../components/BalanceSection';
 const ProfileScreen: React.FC = () => {
   return (
     <LinearGradient
-      colors={['#1F2937', '#111827']}
+      colors={['#0B0F1A', '#111827', '#1E293B', '#0B0F1A']}
       style={styles.container}
+      start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
     >
       <StatusBar barStyle="light-content" />
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -15,9 +16,9 @@ const ProfileScreen: React.FC = () => {
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Profile Information</Text>
           {/* Add more profile details here */}
-          <Text style={styles.profileText}>Name: John Doe</Text>
-          <Text style={styles.profileText}>Email: john.doe@example.com</Text>
-          <Text style={styles.profileText}>Member Since: January 2023</Text>
+          <Text style={styles.profileText}>Name: Armaan Verma</Text>
+          <Text style={styles.profileText}>Email: armnvrma10@gmail.com</Text>
+          <Text style={styles.profileText}>Paasa Member Since: xyz 2025</Text>
         </View>
       </ScrollView>
     </LinearGradient>

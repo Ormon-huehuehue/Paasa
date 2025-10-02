@@ -9,10 +9,10 @@ const BalanceSection: React.FC = () => {
       <Header heading = "Funds"/>
       <View style={styles.balanceSection}>
         <Text style={styles.balanceLabel}>Total Balance</Text>
-        <Text style={styles.balanceAmount}>Rs 2,125,000</Text>
+        <Text style={styles.balanceAmount}>Rs 200</Text>
         <View style={styles.balanceChange}>
-          <Ionicons name="arrow-up" size={14} color="#10B981" />
-          <Text style={styles.balanceChangeText}>Rs 206,920 (10,6%)</Text>
+          <Ionicons name="arrow-down" size={14} color="#d62323ff" />
+          <Text style={styles.balanceChangeText}>Rs 400 (200%)</Text>
         </View>
       </View>
     </View>
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
   },
   balanceChangeText: {
     fontSize: 14,
-    color: '#10B981',
-    fontWeight: '600',
+    color: '#d62323ff',
+    fontWeight: '300',
   },
 });

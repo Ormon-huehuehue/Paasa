@@ -95,6 +95,7 @@ export default MarketSnapshot;
 const styles = StyleSheet.create({
   section: {
     marginBottom: 24,
+    marginTop : 15
   },
   sectionTitle: {
     fontSize: 18,
