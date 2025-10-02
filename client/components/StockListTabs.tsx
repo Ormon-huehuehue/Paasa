@@ -61,7 +61,7 @@ const StockList: React.FC<StockListProps> = ({ endpoint }) => {
   }
 
   return (
-    <ScrollView 
+    <ScrollView
       contentContainerStyle={styles.listContainer}
       refreshControl={
         <RefreshControl
@@ -82,9 +82,9 @@ const StockList: React.FC<StockListProps> = ({ endpoint }) => {
         <StockItem key={`${stock.symbol}-${index}`} {...stock} />
       ))}
       {hasMore && (
-        <TouchableOpacity 
-          onPress={loadMore} 
-          style={[styles.viewMoreButton, loading.isLoadingMore && styles.viewMoreButtonDisabled]} 
+        <TouchableOpacity
+          onPress={loadMore}
+          style={[styles.viewMoreButton, loading.isLoadingMore && styles.viewMoreButtonDisabled]}
           disabled={loading.isLoadingMore}
         >
           {loading.isLoadingMore ? (
@@ -261,6 +261,24 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
+  },
+  demoDataBanner: {
+    backgroundColor: '#374151',
+    padding: 12,
+    borderRadius: 8,
+    marginBottom: 16,
+    borderLeftWidth: 4,
+    borderLeftColor: '#F59E0B',
+  },
+  demoDataText: {
+    color: '#F59E0B',
+    fontSize: 14,
+    fontWeight: '600',
+    marginBottom: 4,
+  },
+  demoDataSubtext: {
+    color: '#9CA3AF',
+    fontSize: 12,
   },
   tabBar: {
     backgroundColor: '#1F2937',

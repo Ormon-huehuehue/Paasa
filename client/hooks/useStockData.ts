@@ -202,7 +202,7 @@ export const useStockData = (
       console.error(`[useStockData] Error fetching ${endpoint} stocks:`, err);
       
       // Check if it's a network error (likely backend not running)
-      if (err.type === 'NETWORK_ERROR' || err.message?.includes('Network Error') || err.code === 'ECONNREFUSED') {
+      if ((err as any).type === 'NETWORK_ERROR' || (err as any).message?.includes('Network Error') || (err as any).code === 'ECONNREFUSED') {
         console.log(`[useStockData] Backend not available, using mock data for ${endpoint}`);
         
         // Use mock data as fallback
