@@ -276,8 +276,7 @@ export class YahooFinanceService implements IYahooFinanceService {
 
       // Sort by change percent descending (highest gainers first)
       return stocks
-        .sort((a, b) => b.changePercent - a.changePercent)
-        .slice(0, 8);
+        .sort((a, b) => b.changePercent - a.changePercent);
     }, 'getTopGainers');
   }
 
@@ -325,6 +324,62 @@ export class YahooFinanceService implements IYahooFinanceService {
         change: 4.12,
         changePercent: 1.68,
         volume: 67890123
+      },
+      {
+        symbol: 'AMD',
+        name: 'Advanced Micro Devices, Inc.',
+        price: 102.34,
+        change: 1.89,
+        changePercent: 1.88,
+        volume: 45678901
+      },
+      {
+        symbol: 'CRM',
+        name: 'Salesforce, Inc.',
+        price: 216.78,
+        change: 3.21,
+        changePercent: 1.50,
+        volume: 12345678
+      },
+      {
+        symbol: 'ADBE',
+        name: 'Adobe Inc.',
+        price: 487.23,
+        change: 6.45,
+        changePercent: 1.34,
+        volume: 23456789
+      },
+      {
+        symbol: 'NFLX',
+        name: 'Netflix, Inc.',
+        price: 385.20,
+        change: 4.80,
+        changePercent: 1.26,
+        volume: 34567890
+      },
+      {
+        symbol: 'PYPL',
+        name: 'PayPal Holdings, Inc.',
+        price: 58.45,
+        change: 0.67,
+        changePercent: 1.16,
+        volume: 56789012
+      },
+      {
+        symbol: 'INTC',
+        name: 'Intel Corporation',
+        price: 23.45,
+        change: 0.25,
+        changePercent: 1.08,
+        volume: 67890123
+      },
+      {
+        symbol: 'CSCO',
+        name: 'Cisco Systems, Inc.',
+        price: 47.89,
+        change: 0.48,
+        changePercent: 1.01,
+        volume: 78901234
       }
     ];
   }
@@ -373,6 +428,46 @@ export class YahooFinanceService implements IYahooFinanceService {
         change: -1.67,
         changePercent: -1.29,
         volume: 56789012
+      },
+      {
+        symbol: 'PYPL',
+        name: 'PayPal Holdings, Inc.',
+        price: 58.45,
+        change: -0.78,
+        changePercent: -1.32,
+        volume: 45678901
+      },
+      {
+        symbol: 'INTC',
+        name: 'Intel Corporation',
+        price: 23.45,
+        change: -0.32,
+        changePercent: -1.35,
+        volume: 56789012
+      },
+      {
+        symbol: 'CSCO',
+        name: 'Cisco Systems, Inc.',
+        price: 47.89,
+        change: -0.67,
+        changePercent: -1.38,
+        volume: 67890123
+      },
+      {
+        symbol: 'IBM',
+        name: 'International Business Machines Corporation',
+        price: 142.56,
+        change: -2.14,
+        changePercent: -1.48,
+        volume: 78901234
+      },
+      {
+        symbol: 'ORCL',
+        name: 'Oracle Corporation',
+        price: 108.23,
+        change: -1.89,
+        changePercent: -1.72,
+        volume: 89012345
       }
     ];
   }
@@ -421,6 +516,62 @@ export class YahooFinanceService implements IYahooFinanceService {
         change: 8.43,
         changePercent: 1.99,
         volume: 45678901
+      },
+      {
+        symbol: 'AMD',
+        name: 'Advanced Micro Devices, Inc.',
+        price: 102.34,
+        change: 1.89,
+        changePercent: 1.88,
+        volume: 43567890
+      },
+      {
+        symbol: 'META',
+        name: 'Meta Platforms, Inc.',
+        price: 298.75,
+        change: -6.45,
+        changePercent: -2.11,
+        volume: 42345678
+      },
+      {
+        symbol: 'MSFT',
+        name: 'Microsoft Corporation',
+        price: 338.11,
+        change: 7.89,
+        changePercent: 2.39,
+        volume: 41234567
+      },
+      {
+        symbol: 'GOOGL',
+        name: 'Alphabet Inc.',
+        price: 138.21,
+        change: 2.87,
+        changePercent: 2.12,
+        volume: 40123456
+      },
+      {
+        symbol: 'AMZN',
+        name: 'Amazon.com, Inc.',
+        price: 127.89,
+        change: -1.67,
+        changePercent: -1.29,
+        volume: 39012345
+      },
+      {
+        symbol: 'NFLX',
+        name: 'Netflix, Inc.',
+        price: 385.20,
+        change: -7.80,
+        changePercent: -1.98,
+        volume: 38901234
+      },
+      {
+        symbol: 'CRM',
+        name: 'Salesforce, Inc.',
+        price: 216.78,
+        change: -3.21,
+        changePercent: -1.46,
+        volume: 37890123
       }
     ];
   }
@@ -463,8 +614,7 @@ export class YahooFinanceService implements IYahooFinanceService {
 
         // Sort by change percent ascending (lowest/most negative first)
         return stocks
-          .sort((a, b) => a.changePercent - b.changePercent)
-          .slice(0, 8);
+          .sort((a, b) => a.changePercent - b.changePercent);
       } catch (error) {
         logger.warn('Failed to get real losers data, returning mock data', { error: (error as Error).message });
         return this.getMockLosers();
@@ -510,8 +660,7 @@ export class YahooFinanceService implements IYahooFinanceService {
 
         // Sort by volume descending
         return stocks
-          .sort((a, b) => b.volume - a.volume)
-          .slice(0, 10);
+          .sort((a, b) => b.volume - a.volume);
       } catch (error) {
         logger.warn('Failed to get most active stocks, returning mock data', { error: (error as Error).message });
         return this.getMockActive();

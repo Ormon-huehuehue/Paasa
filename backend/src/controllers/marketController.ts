@@ -5,9 +5,10 @@
 
 import { Request, Response } from 'express';
 import { yahooFinanceService } from '../services/yahooFinanceService.js';
-import { ApiResponse, ErrorResponse } from '../types/api.js';
+import { ApiResponse, ErrorResponse, PaginatedStockResponse } from '../types/api.js';
 import { MarketIndex, Stock, SpotlightStock } from '../types/market.js';
 import { logger } from '../utils/logger.js';
+import { parsePaginationParams, paginateArray } from '../utils/pagination.js';
 
 export class MarketController {
   /**
@@ -42,17 +43,20 @@ export class MarketController {
   }
 
   /**
-   * Get top gaining stocks
+   * Get top gaining stocks with pagination
    */
   async getTopGainers(req: Request, res: Response): Promise<void> {
     try {
-      const stocks = await yahooFinanceService.getTopGainers();
+      const { limit, offset } = parsePaginationParams(req.query);
+      const allStocks = await yahooFinanceService.getTopGainers();
+      const paginatedResult = paginateArray(allStocks, limit, offset);
       
-      const response: ApiResponse<{ title: string; stocks: Stock[] }> = {
+      const response: PaginatedStockResponse = {
         success: true,
         data: {
           title: 'Top Gainers',
-          stocks
+          stocks: paginatedResult.items,
+          pagination: paginatedResult.pagination
         },
         timestamp: new Date().toISOString()
       };
@@ -76,17 +80,20 @@ export class MarketController {
   }
 
   /**
-   * Get top losing stocks
+   * Get top losing stocks with pagination
    */
   async getTopLosers(req: Request, res: Response): Promise<void> {
     try {
-      const stocks = await yahooFinanceService.getTopLosers();
+      const { limit, offset } = parsePaginationParams(req.query);
+      const allStocks = await yahooFinanceService.getTopLosers();
+      const paginatedResult = paginateArray(allStocks, limit, offset);
       
-      const response: ApiResponse<{ title: string; stocks: Stock[] }> = {
+      const response: PaginatedStockResponse = {
         success: true,
         data: {
           title: 'Top Losers',
-          stocks
+          stocks: paginatedResult.items,
+          pagination: paginatedResult.pagination
         },
         timestamp: new Date().toISOString()
       };
@@ -110,17 +117,20 @@ export class MarketController {
   }
 
   /**
-   * Get most actively traded stocks
+   * Get most actively traded stocks with pagination
    */
   async getMostActive(req: Request, res: Response): Promise<void> {
     try {
-      const stocks = await yahooFinanceService.getMostActive();
+      const { limit, offset } = parsePaginationParams(req.query);
+      const allStocks = await yahooFinanceService.getMostActive();
+      const paginatedResult = paginateArray(allStocks, limit, offset);
       
-      const response: ApiResponse<{ title: string; stocks: Stock[] }> = {
+      const response: PaginatedStockResponse = {
         success: true,
         data: {
           title: 'Most Active',
-          stocks
+          stocks: paginatedResult.items,
+          pagination: paginatedResult.pagination
         },
         timestamp: new Date().toISOString()
       };

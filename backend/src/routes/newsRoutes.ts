@@ -5,15 +5,15 @@
 
 import { Router } from 'express';
 import { newsController } from '../controllers/newsController.js';
-import { validateNewsQuery } from '../middleware/validation.js';
+import { validateNewsQueryWithPagination } from '../middleware/validation.js';
 
 const router = Router();
 
 /**
  * GET /news
- * Fetches latest financial news
- * Query params: q (optional, defaults to 'US stocks')
+ * Fetches latest financial news with pagination
+ * Query params: q (optional, defaults to 'US stocks'), limit (optional, default 10, max 50), offset (optional, default 0)
  */
-router.get('/news', validateNewsQuery, (req, res) => newsController.getLatestNews(req, res));
+router.get('/news', validateNewsQueryWithPagination, (req, res) => newsController.getLatestNews(req, res));
 
 export { router as newsRoutes };

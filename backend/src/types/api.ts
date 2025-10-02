@@ -19,12 +19,18 @@ export interface ErrorResponse {
   timestamp: string;
 }
 
-export interface PaginatedResponse<T> extends ApiResponse<T[]> {
-  pagination?: {
-    page: number;
-    limit: number;
-    total: number;
-  };
+export interface PaginationInfo {
+  total: number;
+  limit: number;
+  offset: number;
+  hasMore: boolean;
+  nextOffset?: number;
 }
+
+export interface PaginatedResponse<T> extends ApiResponse<T[]> {
+  pagination?: PaginationInfo;
+}
+
+export interface PaginatedStockResponse extends ApiResponse<{ title: string; stocks: any[]; pagination: PaginationInfo }> {}
 
 export type ApiResult<T> = ApiResponse<T> | ErrorResponse;

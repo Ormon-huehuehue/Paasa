@@ -51,11 +51,11 @@ const startServer = async (): Promise<void> => {
       logger.info(`📊 Available endpoints:`);
       logger.info(`   GET /health - Health check`);
       logger.info(`   GET /indexes - Market indexes`);
-      logger.info(`   GET /gainers - Top gaining stocks`);
-      logger.info(`   GET /losers - Top losing stocks`);
-      logger.info(`   GET /active - Most active stocks`);
+      logger.info(`   GET /gainers?limit=5&offset=0 - Top gaining stocks (paginated)`);
+      logger.info(`   GET /losers?limit=5&offset=0 - Top losing stocks (paginated)`);
+      logger.info(`   GET /active?limit=5&offset=0 - Most active stocks (paginated)`);
       logger.info(`   GET /spotlight?symbol=MSFT - Spotlight stock`);
-      logger.info(`   GET /news?q=tech - Latest financial news`);
+      logger.info(`   GET /news?q=tech&limit=10&offset=0 - Latest financial news (paginated)`);
       logger.info(`🔧 Environment: ${config.nodeEnv}`);
     });
 

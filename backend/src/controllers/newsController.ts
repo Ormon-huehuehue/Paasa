@@ -5,22 +5,27 @@
 
 import { Request, Response } from 'express';
 import { yahooFinanceService } from '../services/yahooFinanceService.js';
-import { ApiResponse, ErrorResponse } from '../types/api.js';
+import { ApiResponse, ErrorResponse, PaginatedResponse } from '../types/api.js';
 import { NewsItem } from '../types/market.js';
 import { logger } from '../utils/logger.js';
+import { parsePaginationParams, paginateArray } from '../utils/pagination.js';
 
 export class NewsController {
   /**
-   * Get latest financial news
+   * Get latest financial news with pagination
    */
   async getLatestNews(req: Request, res: Response): Promise<void> {
     try {
       const query = req.query.q as string || 'US stocks'; // Default query
-      const news = await yahooFinanceService.getLatestNews(query);
+      const { limit, offset } = parsePaginationParams(req.query);
       
-      const response: ApiResponse<NewsItem[]> = {
+      const allNews = await yahooFinanceService.getLatestNews(query);
+      const paginatedResult = paginateArray(allNews, limit, offset);
+      
+      const response: PaginatedResponse<NewsItem> = {
         success: true,
-        data: news,
+        data: paginatedResult.items,
+        pagination: paginatedResult.pagination,
         timestamp: new Date().toISOString()
       };
       

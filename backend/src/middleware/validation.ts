@@ -115,3 +115,66 @@ export const validateNewsQuery = validateQuery([
     maxLength: 100
   }
 ]);
+
+/**
+ * Validation rules for pagination parameters
+ */
+export const validatePagination = validateQuery([
+  {
+    field: 'limit',
+    required: false,
+    type: 'number'
+  },
+  {
+    field: 'offset',
+    required: false,
+    type: 'number'
+  }
+]);
+
+/**
+ * Combined validation for stock symbol and pagination
+ */
+export const validateStockSymbolWithPagination = validateQuery([
+  {
+    field: 'symbol',
+    required: false,
+    type: 'string',
+    minLength: 1,
+    maxLength: 10,
+    pattern: /^[A-Z0-9.-]+$/i
+  },
+  {
+    field: 'limit',
+    required: false,
+    type: 'number'
+  },
+  {
+    field: 'offset',
+    required: false,
+    type: 'number'
+  }
+]);
+
+/**
+ * Combined validation for news query and pagination
+ */
+export const validateNewsQueryWithPagination = validateQuery([
+  {
+    field: 'q',
+    required: false,
+    type: 'string',
+    minLength: 1,
+    maxLength: 100
+  },
+  {
+    field: 'limit',
+    required: false,
+    type: 'number'
+  },
+  {
+    field: 'offset',
+    required: false,
+    type: 'number'
+  }
+]);

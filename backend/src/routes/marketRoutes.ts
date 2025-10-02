@@ -5,7 +5,7 @@
 
 import { Router } from 'express';
 import { marketController } from '../controllers/marketController.js';
-import { validateStockSymbol } from '../middleware/validation.js';
+import { validateStockSymbolWithPagination, validatePagination } from '../middleware/validation.js';
 
 const router = Router();
 
@@ -17,27 +17,30 @@ router.get('/indexes', (req, res) => marketController.getMarketIndexes(req, res)
 
 /**
  * GET /gainers
- * Fetches top gaining stocks
+ * Fetches top gaining stocks with pagination
+ * Query params: limit (optional, default 10, max 50), offset (optional, default 0)
  */
-router.get('/gainers', (req, res) => marketController.getTopGainers(req, res));
+router.get('/gainers', validatePagination, (req, res) => marketController.getTopGainers(req, res));
 
 /**
  * GET /losers
- * Fetches top losing stocks
+ * Fetches top losing stocks with pagination
+ * Query params: limit (optional, default 10, max 50), offset (optional, default 0)
  */
-router.get('/losers', (req, res) => marketController.getTopLosers(req, res));
+router.get('/losers', validatePagination, (req, res) => marketController.getTopLosers(req, res));
 
 /**
  * GET /active
- * Fetches most actively traded stocks
+ * Fetches most actively traded stocks with pagination
+ * Query params: limit (optional, default 10, max 50), offset (optional, default 0)
  */
-router.get('/active', (req, res) => marketController.getMostActive(req, res));
+router.get('/active', validatePagination, (req, res) => marketController.getMostActive(req, res));
 
 /**
  * GET /spotlight
  * Fetches detailed information for a featured stock
  * Query params: symbol (optional, defaults to AAPL)
  */
-router.get('/spotlight', validateStockSymbol, (req, res) => marketController.getSpotlightStock(req, res));
+router.get('/spotlight', validateStockSymbolWithPagination, (req, res) => marketController.getSpotlightStock(req, res));
 
 export { router as marketRoutes };
