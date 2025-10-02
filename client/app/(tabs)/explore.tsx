@@ -1,11 +1,7 @@
+import Header from '@/components/Header';
 import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
 import { ScrollView, StatusBar, StyleSheet } from 'react-native';
-
-// Components
-
-
-import ExploreHeader from '@/components/ExploreHeader';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import MarketSnapshot from '../../components/MarketSnapshot';
 import NewsSection from '../../components/NewsSection';
@@ -23,7 +19,7 @@ const TradingDashboard: React.FC = () => {
     >
         <StatusBar barStyle="light-content" />
         <ScrollView showsVerticalScrollIndicator={false}>
-          <ExploreHeader/> 
+          <Header heading = "Explore"/> 
           {/* <ActionButtons /> */}
           <MarketSnapshot />
           <WatchlistSection />

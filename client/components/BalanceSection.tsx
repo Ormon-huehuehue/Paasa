@@ -1,15 +1,19 @@
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import Header from './Header';
 
 const BalanceSection: React.FC = () => {
   return (
-    <View style={styles.balanceSection}>
-      <Text style={styles.balanceLabel}>Dana Utama</Text>
-      <Text style={styles.balanceAmount}>Rp2.125.000</Text>
-      <View style={styles.balanceChange}>
-        <Ionicons name="arrow-up" size={14} color="#10B981" />
-        <Text style={styles.balanceChangeText}>Rp206.920 (10,6%)</Text>
+    <View>
+      <Header heading = "Funds"/>
+      <View style={styles.balanceSection}>
+        <Text style={styles.balanceLabel}>Total Balance</Text>
+        <Text style={styles.balanceAmount}>Rs 2,125,000</Text>
+        <View style={styles.balanceChange}>
+          <Ionicons name="arrow-up" size={14} color="#10B981" />
+          <Text style={styles.balanceChangeText}>Rs 206,920 (10,6%)</Text>
+        </View>
       </View>
     </View>
   );

@@ -5,7 +5,6 @@ import { NewsHeadlines } from '../constants/DummyData';
 const NewsSection: React.FC = () => {
   return (
     <View style={styles.section}>
-      <Text style={styles.sectionTitle}>News</Text>
       <View style={styles.newsContainer}>
         {NewsHeadlines.map((newsItem) => (
           <View key={newsItem.id} style={styles.newsCard}>

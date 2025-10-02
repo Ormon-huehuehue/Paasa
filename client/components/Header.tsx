@@ -4,10 +4,10 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 
-export default function ExploreHeader() {
+export default function Header({heading} : {heading : string}) {
   return (
     <Animated.View style={styles.headerContainer}>
-      <Text style={styles.title}>Explore</Text>
+      <Text style={styles.title}>{heading}</Text>
       <View style={styles.profileCircle}>
         <Feather name="user" size={24} color="white" />
       </View>
