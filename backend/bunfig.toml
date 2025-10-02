@@ -1,0 +1,22 @@
+# Bun configuration file
+
+[install]
+# Configure package installation
+cache = true
+exact = false
+production = false
+
+[install.scopes]
+# Scoped package configuration if needed
+
+[run]
+# Runtime configuration
+# bun = true
+
+[test]
+# Test configuration
+preload = []
+
+# Development server configuration
+[dev]
+port = 3000
