@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { ActivityIndicator, Dimensions, RefreshControl, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
 import { useStockData } from '../hooks/useStockData';
+import { MarketIndex } from '@/types/api';
+import { Stock } from '@/types/Stock';
 
 interface StockItemProps {
   symbol: string;
@@ -9,15 +11,39 @@ interface StockItemProps {
   price: number;
   change: number;
   changePercent: number;
+  color : string
 }
 
-const StockItem: React.FC<StockItemProps> = ({ symbol, name, price, changePercent }) => {
+const transformMarketIndexToStock = (index: MarketIndex): Stock => {
+  const isPositive = index.change >= 0;
+  
+  // Generate a color based on the index symbol for consistency
+  const colors = ['#FF9500', '#3B82F6', '#EF4444', '#10B981', '#8B5CF6', '#06B6D4'];
+  const colorIndex = Math.abs(index.symbol.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0)) % colors.length;
+  
+  return {
+    symbol: index.symbol,
+    name: index.name,
+    price: index.price, // MarketIndex uses 'value' property
+    change: index.change,
+    changePercent: index.changePercent,
+    color: colors[colorIndex],
+    positive: isPositive,
+  };
+};
+
+const StockItem: React.FC<StockItemProps> = ({ symbol, name, price, changePercent, color }) => {
   const changeColor = changePercent > 0 ? '#10B981' : '#EF4444';
   return (
     <View style={styles.stockItem}>
-      <View>
-        <Text style={styles.stockTicker}>{symbol}</Text>
-        <Text style={styles.stockExchange}>{name}</Text>
+      <View style={styles.stockIconCircle}>
+        <View style={[styles.stockIcon, { backgroundColor: color }]}>
+          <Text style={styles.stockIconText}>{name.charAt(0)}</Text>
+        </View>
+        <View style={{flex : 1}}>
+          <Text style={styles.stockTicker}>{symbol}</Text>
+          <Text style={styles.stockExchange}>{name}</Text>
+        </View>
       </View>
       <View style={styles.stockPriceChange}>
         <Text style={styles.stockPrice}>${price.toFixed(2)}</Text>
@@ -35,6 +61,8 @@ interface StockListProps {
 
 const StockList: React.FC<StockListProps> = ({ endpoint }) => {
   const { data, loading, error, refetch, loadMore, hasMore } = useStockData(endpoint);
+
+  const transformedStocks = data?.map(transformMarketIndexToStock) || [];
 
   if (loading.isLoading && !data) {
     return (
@@ -78,7 +106,7 @@ const StockList: React.FC<StockListProps> = ({ endpoint }) => {
           <Text style={styles.demoDataSubtext}>Backend server not running - showing sample data</Text>
         </View>
       )}
-      {data?.map((stock, index) => (
+      {transformedStocks?.map((stock, index) => (
         <StockItem key={`${stock.symbol}-${index}`} {...stock} />
       ))}
       {hasMore && (
@@ -177,6 +205,24 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 16,
     marginBottom: 10,
+  },
+  stockIconCircle : {
+    flex : 1, 
+    flexDirection : "row", 
+    gap : 15, 
+    alignItems : "center"
+  },
+  stockIcon: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  stockIconText: {
+    color: '#FFF',
+    fontSize: 12,
+    fontWeight: '700',
   },
   stockTicker: {
     fontSize: 16,

@@ -176,10 +176,9 @@ export class YahooFinanceService implements IYahooFinanceService {
       const quotes = await yahooFinance.quote(symbols);
       const indexes: MarketIndex[] = [];
 
-      quotes.forEach(quote =>{
+      quotes.forEach(quote => {
         const symbol = quote.symbol;
-        console.log("Symbol : ", symbol)
-     
+
         if (quote && symbol) {
           indexes.push(this.transformToMarketIndex(quote, symbol));
         }

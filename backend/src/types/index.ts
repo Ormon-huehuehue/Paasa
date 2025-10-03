@@ -17,5 +17,3 @@ export * from './config';
 // Service contracts
 export * from './services';
 
-// Constants and enums
-export * from './constants';

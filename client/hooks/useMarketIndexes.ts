@@ -87,11 +87,9 @@ export const useMarketIndexes = (): UseMarketIndexesReturn => {
         isRefreshing: isRefresh,
       }));
 
-      console.log('[useMarketIndexes] Fetching market indexes...');
       const response = await apiService.getMarketIndexes();
       
       if (response.success && response.data) {
-        console.log('[useMarketIndexes] Successfully fetched market indexes:', response.data);
         setData(response.data);
         setLastUpdated(new Date());
       } else {

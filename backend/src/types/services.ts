@@ -24,14 +24,7 @@ export interface INewsService extends IBaseService {
   getLatestNews(query?: string, limit?: number): Promise<NewsItem[]>;
 }
 
-// Cache service interface
-export interface ICacheService {
-  get<T>(key: string): Promise<T | null>;
-  set<T>(key: string, value: T, ttl?: number): Promise<void>;
-  delete(key: string): Promise<void>;
-  clear(pattern?: string): Promise<void>;
-  isAvailable(): boolean;
-}
+
 
 // Logger service interface
 export interface ILogger {

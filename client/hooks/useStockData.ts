@@ -132,8 +132,6 @@ export const useStockData = (
     isRequestInProgress.current = true;
     clearError();
 
-    console.log(`[useStockData] Fetching ${endpoint} stocks with params:`, params);
-
     // Set appropriate loading state
     setLoading(prev => ({
       ...prev,

@@ -152,13 +152,6 @@ export interface UseSpotlightStockReturn {
   lastUpdated: Date | null;
 }
 
-// Cache Entry Structure
-export interface CacheEntry<T> {
-  data: T;
-  timestamp: number;
-  expiresAt: number;
-}
-
 // API Service Interface
 export interface ApiServiceInterface {
   // Stock endpoints

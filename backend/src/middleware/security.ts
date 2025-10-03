@@ -35,31 +35,10 @@ export const corsMiddleware = (req: Request, res: Response, next: NextFunction):
   next();
 };
 
-/**
- * Security headers middleware
- */
-export const securityHeaders = (req: Request, res: Response, next: NextFunction): void => {
-  // Prevent clickjacking
-  res.header('X-Frame-Options', 'DENY');
-  
-  // Prevent MIME type sniffing
-  res.header('X-Content-Type-Options', 'nosniff');
-  
-  // Enable XSS protection
-  res.header('X-XSS-Protection', '1; mode=block');
-  
-  // Referrer policy
-  res.header('Referrer-Policy', 'strict-origin-when-cross-origin');
-  
-  // Content Security Policy (basic)
-  res.header('Content-Security-Policy', "default-src 'self'");
-  
-  next();
-};
 
 /**
  * Simple rate limiting middleware
- * In production, consider using redis-based rate limiting
+ * Uses in-memory storage for rate limiting
  */
 interface RateLimitStore {
   [key: string]: {

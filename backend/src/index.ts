@@ -8,8 +8,8 @@ import { logger } from './utils/logger.js';
 import { getConfig } from './config/environment.js';
 import { apiRoutes } from './routes/index.js';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler.js';
-import { requestLogger } from './middleware/requestLogger.js';
-import { corsMiddleware, securityHeaders, rateLimit } from './middleware/security.js';
+
+import { corsMiddleware, rateLimit } from './middleware/security.js';
 
 const app = express();
 const config = getConfig();
@@ -19,7 +19,6 @@ app.set('trust proxy', 1);
 
 // Security middleware
 app.use(corsMiddleware);
-app.use(securityHeaders);
 
 // Rate limiting (100 requests per minute per IP)
 app.use(rateLimit(60000, 100));
@@ -28,8 +27,7 @@ app.use(rateLimit(60000, 100));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// Request logging middleware
-app.use(requestLogger);
+
 
 // API routes
 app.use('/', apiRoutes);

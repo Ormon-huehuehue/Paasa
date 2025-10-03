@@ -158,7 +158,7 @@ export class MarketController {
    */
   async getSpotlightStock(req: Request, res: Response): Promise<void> {
     try {
-      const symbol = req.query.symbol as string || 'AAPL'; // Default to Apple
+      const symbol = req.query.symbol as string || 'NVDA'; // Default to Apple
       const spotlightStock = await yahooFinanceService.getSpotlightStock(symbol);
 
       const response: ApiResponse<SpotlightStock> = {

@@ -22,7 +22,7 @@ The `types/` directory contains all TypeScript interfaces and type definitions:
 - `market.ts` - Market data types (MarketIndex, Stock, SpotlightStock, NewsItem)
 - `api.ts` - API response types (ApiResponse, ErrorResponse)
 - `yahoo.ts` - Yahoo Finance service contracts and API types
-- `config.ts` - Configuration types (AppConfig, DatabaseConfig, CacheConfig)
+- `config.ts` - Configuration types (AppConfig)
 - `services.ts` - Service layer contracts and interfaces
 - `constants.ts` - Application constants, enums, and default values
 - `index.ts` - Central export for all types

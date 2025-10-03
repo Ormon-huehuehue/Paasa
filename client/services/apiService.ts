@@ -100,9 +100,7 @@ class ApiService implements ApiServiceInterface {
    */
   async getMarketIndexes(): Promise<MarketIndexResponse> {
     try {
-      console.log('[ApiService] Fetching market indexes...');
       const response = await apiClient.get('/indexes');
-      console.log('[ApiService] Market indexes response:', response.data);
       return response.data;
     } catch (error) {
       console.error('[ApiService] Error fetching market indexes:', error);
@@ -117,7 +115,6 @@ class ApiService implements ApiServiceInterface {
    * @returns Transformed StockListResponse
    */
   private transformStockListResponse(backendResponse: any, title: string): StockListResponse {
-    console.log('[ApiService] Transforming response:', backendResponse);
     
     // Handle the actual backend response structure based on API docs
     // Backend returns: { success: true, data: { stocks: [...], pagination: {...} }, timestamp: "..." }

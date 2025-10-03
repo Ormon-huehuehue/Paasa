@@ -2,14 +2,10 @@ import axios, { AxiosInstance, InternalAxiosRequestConfig, AxiosResponse, AxiosE
 
 // API Configuration
 export const API_CONFIG = {
-  BASE_URL: process.env.EXPO_PUBLIC_API_BASE_URL || 'http://localhost:3000',
+  BASE_URL: process.env.EXPO_PUBLIC_API_BASE_URL || 'http://localhost:3001',
   TIMEOUT: 10000, // 10 seconds
   RETRY_ATTEMPTS: 3,
   RETRY_DELAY: 1000, // 1 second base delay
-  CACHE_TTL: {
-    STOCKS: 30000, // 30 seconds
-    NEWS: 300000,  // 5 minutes
-  }
 };
 
 // Feature flags
@@ -70,23 +66,23 @@ const createApiClient = (): AxiosInstance => {
     },
     async (error: AxiosError) => {
       const apiError = transformError(error);
-      
+
       // Retry logic for retryable errors
       if (apiError.retryable && FEATURE_FLAGS.ENABLE_RETRY) {
         const config = error.config as any;
         const retryCount = config.__retryCount || 0;
-        
+
         if (retryCount < API_CONFIG.RETRY_ATTEMPTS) {
           config.__retryCount = retryCount + 1;
-          
+
           // Exponential backoff
           const delay = API_CONFIG.RETRY_DELAY * Math.pow(2, retryCount);
           await new Promise(resolve => setTimeout(resolve, delay));
-          
+
           return client(config);
         }
       }
-      
+
       return Promise.reject(apiError);
     }
   );
@@ -103,7 +99,7 @@ const transformError = (error: AxiosError): ApiError => {
       retryable: true
     };
   }
-  
+
   if (!error.response) {
     return {
       type: ApiErrorType.NETWORK_ERROR,
@@ -111,9 +107,9 @@ const transformError = (error: AxiosError): ApiError => {
       retryable: true
     };
   }
-  
+
   const statusCode = error.response.status;
-  
+
   if (statusCode >= 500) {
     return {
       type: ApiErrorType.SERVER_ERROR,
@@ -122,7 +118,7 @@ const transformError = (error: AxiosError): ApiError => {
       retryable: true
     };
   }
-  
+
   if (statusCode === 429) {
     return {
       type: ApiErrorType.RATE_LIMIT_ERROR,
@@ -131,7 +127,7 @@ const transformError = (error: AxiosError): ApiError => {
       retryable: true
     };
   }
-  
+
   if (statusCode >= 400 && statusCode < 500) {
     const responseData = error.response.data as any;
     return {
@@ -141,7 +137,7 @@ const transformError = (error: AxiosError): ApiError => {
       retryable: false
     };
   }
-  
+
   return {
     type: ApiErrorType.UNKNOWN_ERROR,
     message: 'An unexpected error occurred.',
