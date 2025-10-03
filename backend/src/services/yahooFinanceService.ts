@@ -243,15 +243,6 @@ export class YahooFinanceService implements IYahooFinanceService {
       for (const symbol of symbols) {
         const quote = quotes?.[symbol];
         if (quote) {
-          logger.info(`Processing quote for ${symbol}`, {
-            symbol,
-            price: quote.regularMarketPrice,
-            change: quote.regularMarketChange,
-            changePercent: quote.regularMarketChangePercent,
-            volume: quote.regularMarketVolume,
-            fullQuote: quote
-          });
-
           const transformedStock = this.transformToStock({ ...quote, symbol });
           stocks.push(transformedStock);
         } else {

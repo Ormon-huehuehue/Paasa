@@ -45,8 +45,8 @@ const NewsSection: React.FC<NewsSectionProps> = ({
 
   // When pagination is enabled, show all accumulated data
   // When pagination is disabled, limit the data to the specified limit
-  const displayedNews = newsData ? 
-    (enablePagination ? newsData : (limit ? newsData.slice(0, limit) : newsData)) : 
+  const displayedNews = newsData ?
+    (enablePagination ? newsData : (limit ? newsData.slice(0, limit) : newsData)) :
     [];
 
   // Debug logging
@@ -138,10 +138,10 @@ const NewsSection: React.FC<NewsSectionProps> = ({
             </Text>
           </TouchableOpacity>
         ))}
-        
+
         {enablePagination && hasMore && !loading.isLoading && (
-          <TouchableOpacity 
-            style={styles.viewMoreButton} 
+          <TouchableOpacity
+            style={styles.viewMoreButton}
             onPress={loadMore}
             disabled={loading.isLoadingMore}
           >

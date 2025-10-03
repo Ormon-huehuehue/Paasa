@@ -128,7 +128,7 @@ GET /spotlight?symbol=AAPL        # Detailed stock information
 
 #### 📰 Financial News
 ```http
-GET /news?q=technology&limit=2&offset=0    # Search financial news
+GET /news?q=tech&limit=5&offset=0    # Search financial news
 ```
 
 ### Error Handling
@@ -186,7 +186,7 @@ Create `.env` file in the backend directory:
 
 ```bash
 # Server Configuration
-PORT=3000
+PORT=3001
 NODE_ENV=development
 
 # Yahoo Finance API Configuration
