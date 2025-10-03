@@ -430,3 +430,29 @@ The client automatically connects to the backend API. Ensure the backend is runn
 - **Fallback States**: Graceful degradation when services are unavailable
 
 ---
+
+
+
+
+## Difficulties in Implementation and Learning
+
+The most complex task encountered when dealing with external API integration was implementing pagination for Yahoo APIs.
+
+    The Problem: The Yahoo APIs themselves often did not support any standard pagination parameters by default, such as limit (items per page) or offset (starting point). Without these, a standard request would simply return the full dataset, which is inefficient and unmanageable for large results.
+
+    The Custom Solution Required: This forced the implementation of custom, client-side pagination logic. This meant:
+        Fetching the Full Dataset: The initial request had to retrieve all data points (or as many as possible within a practical limit).
+
+        Client-Side Indexing and Slicing: The data received from Yahoo had to be loaded into memory and then manually "sliced" into pages based on the desired limit and offset values determined by the application.
+
+        Dynamic Client-Side Rendering: For all subsequent requests (e.g., clicking "Next Page"), the application calculated the new index range and dynamically rendered the appropriate subset of the already-loaded data on the client side.
+
+    # The pagination parameters:
+       - First load: limit=2, offset=0 → Gets items 0-1
+       - Second load (View More): limit=2, offset=2 → Gets items 2-3
+       - Third load (View More): limit=2, offset=4 → Gets items 4-5
+
+    #Why this approach:
+      ✅ Fresh data: Each "View More" gets the latest news from Yahoo Finance
+      ✅ Memory efficient: Doesn't store large amounts of data upfront
+      ✅ Real pagination: True server-side pagination with offset/limit
