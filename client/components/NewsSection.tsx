@@ -43,7 +43,21 @@ const NewsSection: React.FC<NewsSectionProps> = ({
     refetch();
   };
 
-  const displayedNews = newsData ? (limit ? newsData.slice(0, limit) : newsData) : [];
+  // When pagination is enabled, show all accumulated data
+  // When pagination is disabled, limit the data to the specified limit
+  const displayedNews = newsData ? 
+    (enablePagination ? newsData : (limit ? newsData.slice(0, limit) : newsData)) : 
+    [];
+
+  // Debug logging
+  console.log('📰 NewsSection render:', {
+    enablePagination,
+    limit,
+    totalNewsData: newsData?.length || 0,
+    displayedNewsCount: displayedNews.length,
+    hasMore,
+    isLoadingMore: loading.isLoadingMore
+  });
 
   const formatTimestamp = (date: Date): string => {
     const now = new Date();

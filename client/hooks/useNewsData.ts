@@ -120,9 +120,15 @@ export const useNewsData = (
 
         if (isLoadMore) {
           // Append new items to existing data
-          setData(prevData => prevData ? [...prevData, ...validNewsItems] : validNewsItems);
+          console.log('📰 Loading more news - appending', validNewsItems.length, 'new items');
+          setData(prevData => {
+            const newData = prevData ? [...prevData, ...validNewsItems] : validNewsItems;
+            console.log('📰 Total news items after load more:', newData.length);
+            return newData;
+          });
         } else {
           // Replace data (initial load or refresh)
+          console.log('📰 Initial/refresh load - replacing with', validNewsItems.length, 'items');
           setData(validNewsItems);
           setCurrentOffset(params.offset || 0);
         }
@@ -199,18 +205,23 @@ export const useNewsData = (
     currentLimit.current = limit;
   }, [query, limit]);
 
-  // Initial data fetch on mount or when query/limit changes
+  // Initial data fetch on mount only
   useEffect(() => {
     fetchInitialData();
-  }, [fetchInitialData]);
+  }, []); // Empty dependency array - only run on mount
 
   // Refetch when query changes
   useEffect(() => {
     if (currentQuery.current !== query) {
-      currentQuery.current = query;
-      fetchInitialData();
+      setCurrentOffset(0);
+      setHasMore(true);
+      fetchNewsData({
+        query: query,
+        limit: currentLimit.current,
+        offset: 0
+      });
     }
-  }, [query, fetchInitialData]);
+  }, [query, fetchNewsData]);
 
   return {
     data,
