@@ -2,6 +2,16 @@
 
 A comprehensive financial application consisting of a TypeScript backend API and a React Native mobile client, designed to provide real-time stock market data, financial news, and portfolio management capabilities.
 
+## 📸 Screenshots
+Explore
+<img width="628" height="1361" alt="image" src="https://github.com/user-attachments/assets/da7f5c0e-4de9-4510-a1d1-eb93bfda54b2" />
+
+Stocks (Most Active, Top Losers, Top Gainers)
+<img width="618" height="1338" alt="image" src="https://github.com/user-attachments/assets/bbec5420-e183-4ca5-99b2-72c0c535fef4" />
+
+News
+<img width="620" height="1344" alt="image" src="https://github.com/user-attachments/assets/4c6968a3-50a8-4b0e-b632-c65d95d91de5" />
+
 ## 🏗️ Project Architecture
 
 This project follows a modern full-stack architecture with clear separation of concerns:
