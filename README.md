@@ -56,7 +56,7 @@ paasa/
    - Scan QR code with Expo Go app (mobile)
    - Press `i` for iOS simulator
    - Press `a` for Android emulator
-   - Press 'w' for Web based emulation of native code
+   - Press `w` for Web based emulation of native code
 
 ---
 
@@ -78,7 +78,7 @@ A TypeScript backend service that acts as a proxy for Yahoo Finance stock data, 
 - 🔄 **Graceful Error Handling** - Comprehensive error handling with retry logic
 
 ### Technology Stack
-- **Framework**: Express.js (backend) + Expo - React Native (frontend)
+- **Framework**: Express.js
 - **Language**: TypeScript
 - **Data Source**: Yahoo Finance API
 
@@ -234,8 +234,7 @@ A modern React Native mobile application built with Expo, featuring real-time st
 - 📰 **Financial News Feed** - Latest financial news with search and filtering
 - ⭐ **Stock Spotlight** - Featured stock with detailed company information
 - 🔄 **Pull-to-Refresh** - Intuitive data refreshing across all screens
-- 📱 **Responsive Design** - Optimized for various screen sizes and orientations
-- ⚡ **Performance Optimized** - Efficient data fetching with client-side caching and error handling
+- ⚡ **Performance Optimized** - Efficient data fetching error handling
 - 🎭 **Animated Splash Screen** - Professional app loading experience
 
 ### Technology Stack
@@ -408,27 +407,8 @@ The client automatically connects to the backend API. Ensure the backend is runn
 ### ⚡ Performance Optimizations
 - **Lazy Loading**: Components and data loaded on demand
 - **Memoization**: Prevent unnecessary re-renders
-- **Image Optimization**: Proper image sizing and caching
 - **Bundle Splitting**: Efficient code splitting with Expo Router
 
----
-
-## 🔗 Integration Guide
-
-### Backend-Client Communication
-
-The client communicates with the backend through a centralized API service:
-
-```typescript
-// client/services/apiService.ts
-class ApiService {
-  private baseURL = 'http://localhost:3001';
-  
-  async getMarketIndexes(): Promise<MarketIndexResponse> {
-    // Implementation with error handling and data transformation
-  }
-}
-```
 
 ### Data Flow
 1. **User Interaction**: User navigates to a screen or pulls to refresh
@@ -446,58 +426,3 @@ class ApiService {
 - **Fallback States**: Graceful degradation when services are unavailable
 
 ---
-
-## 🚀 Deployment
-
-### Backend Deployment
-```bash
-cd backend
-bun run build              # Build for production
-bun start                  # Start production server
-```
-
-### Mobile App Deployment
-```bash
-cd client
-expo build:android         # Build Android APK
-expo build:ios            # Build iOS IPA
-expo publish              # Publish to Expo
-```
-
----
-
-## 🤝 Contributing
-
-1. **Fork the repository**
-2. **Create a feature branch** (`git checkout -b feature/amazing-feature`)
-3. **Follow coding standards** (TypeScript, ESLint, Prettier)
-4. **Write tests** for new functionality
-5. **Commit changes** (`git commit -m 'Add amazing feature'`)
-6. **Push to branch** (`git push origin feature/amazing-feature`)
-7. **Open a Pull Request**
-
-### Code Style Guidelines
-- **TypeScript**: Strict type checking enabled
-- **ESLint**: Follow configured linting rules
-- **Prettier**: Consistent code formatting
-- **Naming**: Use descriptive names for variables and functions
-- **Comments**: Document complex logic and API interfaces
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-## 🆘 Support
-
-For support and questions:
-- **Issues**: Create an issue on GitHub
-- **Documentation**: Check the README files in each directory
-- **API Documentation**: See backend API endpoints section above
-
----
-
-**Built with ❤️ using TypeScript, React Native, and modern web technologies**
