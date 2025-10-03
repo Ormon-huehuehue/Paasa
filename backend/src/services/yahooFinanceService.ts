@@ -738,7 +738,7 @@ export class YahooFinanceService implements IYahooFinanceService {
               : Math.floor(new Date(item.providerPublishTime).getTime() / 1000),
             summary: item.summary
           }))
-          .slice(0, 5); // Limit to 10 items
+          .slice(0, 10); // Limit to 10 items
 
         return newsItems;
       } catch (error) {

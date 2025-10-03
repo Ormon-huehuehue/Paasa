@@ -42,7 +42,7 @@ paasa/
    cd backend
    bun install                    # Install dependencies
    cp .env.example .env          # Configure environment
-   bun dev                       # Start development server (port 3000)
+   bun run dev                       # Start development server (port 3000)
    ```
 
 3. **Client Setup** (in a new terminal)
@@ -71,19 +71,16 @@ A TypeScript backend service that acts as a proxy for Yahoo Finance stock data, 
 - 📊 **Market Data Endpoints** - Real-time stock prices, market indexes, and trading volumes
 - 🔍 **Stock Spotlight** - Detailed company information with financial metrics
 - 📰 **Financial News** - Aggregated news with search and pagination
-- ⚡ **Retry Logic & Error Handling** - Robust error handling with exponential backoff
+- ⚡ **Retry Logic & Error Handling** - Robust error handling
 - 🛡️ **Security Middleware** - CORS, rate limiting, input validation
 - 📝 **Full TypeScript Support** - Strict type checking and IntelliSense
 - 🏗️ **Modular Architecture** - Clean separation of concerns
 - 🔄 **Graceful Error Handling** - Comprehensive error handling with retry logic
 
 ### Technology Stack
-
-- **Runtime**: Bun (primary) / Node.js (fallback)
-- **Framework**: Express.js
+- **Framework**: Express.js (backend) + Expo - React Native (frontend)
 - **Language**: TypeScript
 - **Data Source**: Yahoo Finance API
-- **Architecture**: RESTful API with MVC pattern
 
 ## API Endpoints
 
@@ -109,11 +106,6 @@ All API responses follow a consistent structure:
 ```
 
 ### Core Endpoints
-
-#### 🏥 Health Check
-```http
-GET /health
-```
 Verify API status and uptime.
 
 #### 📈 Market Indexes
@@ -124,9 +116,9 @@ Get major market indexes (S&P 500, NASDAQ 100, Dow Jones, Russell 2000).
 
 #### 📊 Stock Lists
 ```http
-GET /gainers?limit=10&offset=0    # Top gaining stocks
-GET /losers?limit=10&offset=0     # Top losing stocks  
-GET /active?limit=10&offset=0     # Most active stocks
+GET /gainers?limit=5&offset=0    # Top gaining stocks
+GET /losers?limit=5&offset=0     # Top losing stocks  
+GET /active?limit=5&offset=0     # Most active stocks
 ```
 
 #### ⭐ Stock Spotlight
@@ -136,7 +128,7 @@ GET /spotlight?symbol=AAPL        # Detailed stock information
 
 #### 📰 Financial News
 ```http
-GET /news?q=technology&limit=10&offset=0    # Search financial news
+GET /news?q=technology&limit=2&offset=0    # Search financial news
 ```
 
 ### Error Handling

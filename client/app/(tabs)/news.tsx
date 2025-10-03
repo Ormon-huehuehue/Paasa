@@ -14,7 +14,7 @@ const NewsScreen: React.FC = () => {
       <Header heading="Latest news" />
       <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
         <View style={styles.section}>
-          <NewsSection enablePagination={true} limit={2} />
+          <NewsSection enablePagination={true} limit={5} />
         </View>
       </ScrollView>
     </LinearGradient>
