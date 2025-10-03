@@ -1,4 +1,4 @@
-# PAASA - Personal Asset & Stock Analysis
+# PAASA - Intern Assignment
 
 A comprehensive financial application consisting of a TypeScript backend API and a React Native mobile client, designed to provide real-time stock market data, financial news, and portfolio management capabilities.
 
