@@ -203,13 +203,6 @@ export class YahooFinanceService implements IYahooFinanceService {
       try {
         // First try: get quotes as array response
         quotes = await yahooFinance.quote(symbols);
-        logger.info('Yahoo Finance quotes response (array format)', {
-          isArray: Array.isArray(quotes),
-          length: Array.isArray(quotes) ? quotes.length : 'N/A',
-          type: typeof quotes,
-          keys: typeof quotes === 'object' ? Object.keys(quotes) : 'N/A'
-        });
-
         // If quotes is an array, convert to object keyed by symbol
         if (Array.isArray(quotes)) {
           const quotesObj: Record<string, any> = {};
@@ -249,15 +242,6 @@ export class YahooFinanceService implements IYahooFinanceService {
           logger.warn(`No quote data for symbol: ${symbol}`);
         }
       }
-
-      logger.info('Processed stocks', {
-        stocksCount: stocks.length,
-        stocks: stocks.map(s => ({
-          symbol: s.symbol,
-          price: s.price,
-          changePercent: s.changePercent
-        }))
-      });
 
       // If no stocks were processed, return mock data for demo purposes
       if (stocks.length === 0) {
